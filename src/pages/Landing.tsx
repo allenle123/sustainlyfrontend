@@ -35,18 +35,14 @@ const Landing = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-white to-gray-50 px-4">
-      <div className="max-w-md w-full">
-        <div className="mb-12 text-center">
-          <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
-            <span className="block text-sky-500">Sustainly</span>
-          </h1>
-          <p className="mt-3 text-base text-gray-600 sm:mx-auto sm:mt-5 sm:max-w-xl sm:text-lg md:mt-5 md:text-xl">
-            Discover the environmental impact of products before you buy them.
-          </p>
-        </div>
+    <div className="mx-auto flex min-h-screen max-w-6xl flex-col px-4 py-8 sm:px-6 md:py-12">
+      <header className="mb-12 text-center">
+        <h1 className="text-3xl font-bold tracking-tight">Sustainly</h1>
+        <p className="mt-2 text-gray-600">Evaluating the environmental impact of products</p>
+      </header>
 
-        <div className="rounded-xl bg-white p-8 shadow-lg ring-1 ring-gray-200">
+      <div className="mx-auto w-full max-w-md">
+        <div className="eco-card">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="productUrl" className="block text-sm font-medium text-gray-700">
@@ -59,7 +55,7 @@ const Landing = () => {
                   type="text"
                   required
                   placeholder="https://www.amazon.com/product/..."
-                  className="block w-full rounded-lg border-gray-300 bg-gray-50 px-4 py-3 shadow-sm transition-colors focus:border-sky-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sky-500/20 sm:text-sm"
+                  className="block w-full rounded-lg border-gray-300 bg-gray-50 px-4 py-3 shadow-sm transition-colors focus:border-primary focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 sm:text-sm"
                   value={productUrl}
                   onChange={(e) => setProductUrl(e.target.value)}
                 />
@@ -71,7 +67,7 @@ const Landing = () => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="flex w-full justify-center rounded-lg bg-sky-500 px-4 py-3 text-base font-medium text-white shadow-sm transition-colors hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 disabled:opacity-70"
+                className="flex w-full justify-center rounded-lg bg-primary px-4 py-3 text-base font-medium text-white shadow-sm transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-70"
               >
                 {isLoading ? (
                   <>
