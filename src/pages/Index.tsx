@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import ProductDisplay from '@/components/ProductDisplay';
 import ScoreDisplay from '@/components/ScoreDisplay';
 import SubcategoryCard from '@/components/SubcategoryCard';
+import AlternativeProducts from '@/components/AlternativeProducts';
 
 const productData = {
   name: "Eco-Friendly Water Bottle",
@@ -31,6 +32,36 @@ const productData = {
       title: "End of Life",
       score: 82,
       description: "Fully recyclable with a take-back program for proper disposal and recycling."
+    }
+  ],
+  alternativeProducts: [
+    {
+      id: "1",
+      name: "Bamboo Insulated Bottle",
+      brand: "EcoVibe",
+      score: 82,
+      imageSrc: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=500&auto=format&fit=crop"
+    },
+    {
+      id: "2",
+      name: "Recycled Glass Water Bottle",
+      brand: "PureEarth",
+      score: 88,
+      imageSrc: "https://images.unsplash.com/photo-1610631787886-a85b902f7499?w=500&auto=format&fit=crop"
+    },
+    {
+      id: "3",
+      name: "Collapsible Silicone Bottle",
+      brand: "TerraFlex",
+      score: 75,
+      imageSrc: "https://images.unsplash.com/photo-1565105346659-aee7dc634e74?w=500&auto=format&fit=crop"
+    },
+    {
+      id: "4",
+      name: "Hemp Fiber Thermal Flask",
+      brand: "NaturalFlow",
+      score: 79,
+      imageSrc: "https://images.unsplash.com/photo-1575377427642-087cf684f29d?w=500&auto=format&fit=crop"
     }
   ]
 };
@@ -89,6 +120,8 @@ const Index = () => {
           />
         ))}
       </div>
+
+      <AlternativeProducts products={productData.alternativeProducts} />
     </div>
   );
 };
