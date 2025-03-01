@@ -64,7 +64,7 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				eco: {
-					'green': '#4CAF50',
+					'green': '#25C55B', // Bright green from the image
 					'yellow': '#FFC107',
 					'orange': '#FF9800',
 					'red': '#F44336',
