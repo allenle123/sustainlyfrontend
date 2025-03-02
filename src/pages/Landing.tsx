@@ -37,7 +37,11 @@ const Landing = () => {
         }
       );
       console.log('API Response:', response.data);
-      navigate('/product');
+      navigate('/product', { 
+        state: { 
+          productData: response.data 
+        }
+      });
     } catch (err) {
       setError('Failed to check sustainability. Please try again.');
       console.error('Error:', err);
