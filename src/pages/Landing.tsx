@@ -1,12 +1,34 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+
+const loadingStates = [
+  'Retrieving product data...',
+  'Analyzing sustainability factors...',
+  'Calculating environmental impact...',
+  'Processing materials data...',
+  'Evaluating manufacturing process...',
+  'Finalizing sustainability score...'
+];
 
 const Landing = () => {
   const [productUrl, setProductUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [loadingMessage, setLoadingMessage] = useState(loadingStates[0]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isLoading) {
+      let currentIndex = 0;
+      const interval = setInterval(() => {
+        currentIndex = (currentIndex + 1) % loadingStates.length;
+        setLoadingMessage(loadingStates[currentIndex]);
+      }, 2000); // Change message every 2 seconds
+
+      return () => clearInterval(interval);
+    }
+  }, [isLoading]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,6 +47,7 @@ const Landing = () => {
     
     setError('');
     setIsLoading(true);
+    setLoadingMessage(loadingStates[0]);
 
     try {
       const response = await axios.get(
@@ -80,10 +103,10 @@ const Landing = () => {
               className="flex w-full justify-center rounded-full bg-eco-green px-6 py-4 text-lg font-medium text-white shadow-sm transition-colors hover:bg-eco-green/90 focus:outline-none focus:ring-2 focus:ring-eco-green focus:ring-offset-2 disabled:opacity-70"
             >
               {isLoading ? (
-                <>
-                  <span className="mr-2 h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
-                  Analyzing...
-                </>
+                <div className="flex items-center space-x-3">
+                  <span className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
+                  <span className="animate-pulse">{loadingMessage}</span>
+                </div>
               ) : (
                 'Check Sustainability'
               )}
