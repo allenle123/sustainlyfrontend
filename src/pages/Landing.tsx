@@ -1,6 +1,6 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Landing = () => {
   const [productUrl, setProductUrl] = useState('');
@@ -8,7 +8,7 @@ const Landing = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Basic validation
@@ -25,13 +25,25 @@ const Landing = () => {
     
     setError('');
     setIsLoading(true);
-    
-    // In a real app, we would send this URL to the backend
-    // For now, we'll simulate a loading state and then navigate
-    setTimeout(() => {
-      setIsLoading(false);
+
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_PRODUCT_SCORE_URL}?url=${encodeURIComponent(productUrl)}`,
+        {
+          withCredentials: false,
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      console.log('API Response:', response.data);
       navigate('/product');
-    }, 1500);
+    } catch (err) {
+      setError('Failed to check sustainability. Please try again.');
+      console.error('Error:', err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -77,7 +89,7 @@ const Landing = () => {
         
         <div className="mt-10 text-center">
           <p className="text-sm text-gray-500">
-            © {new Date().getFullYear()} Sustainly. All rights reserved.
+            {new Date().getFullYear()} Sustainly. All rights reserved.
           </p>
         </div>
       </div>
