@@ -1,69 +1,91 @@
-# Welcome to your Lovable project
+# Sustainly - Sustainable Shopping Made Easy
 
-## Project info
+## Overview
 
-**URL**: https://lovable.dev/projects/8887bd81-aa56-4ad0-9c69-0c07d942db02
+Sustainly is a web application that helps users make environmentally conscious shopping decisions by analyzing Amazon products and providing sustainability scores. The application evaluates products across multiple environmental impact categories and suggests more sustainable alternatives.
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- **Product Analysis**: Enter any Amazon product URL to get a detailed sustainability analysis
+- **Comprehensive Scoring**: Products are evaluated across multiple categories:
+  - Materials and Resources
+  - Production Process
+  - Packaging
+  - End of Life Impact
+- **Overall Eco Score**: Get a clear, easy-to-understand sustainability rating
+- **Alternative Products**: Discover more sustainable alternatives to your selected product
+- **Responsive Design**: Works seamlessly on both desktop and mobile devices
 
-**Use Lovable**
+## Tech Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/8887bd81-aa56-4ad0-9c69-0c07d942db02) and start prompting.
+### Frontend
+- React with TypeScript
+- Vite for build tooling
+- Tailwind CSS for styling
+- shadcn/ui for UI components
+- React Router for navigation
+- React Query for data management
 
-Changes made via Lovable will be committed automatically to this repo.
+### Backend (Separate Repository)
+- AWS Lambda for serverless functions
+- AWS CDK for infrastructure
+- TypeScript
+- Product caching system
+- Sustainability scoring algorithm
 
-**Use your preferred IDE**
+## Getting Started
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Prerequisites
+- Node.js
+- pnpm (preferred package manager)
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+### Installation
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
+# Clone the repository
 git clone <YOUR_GIT_URL>
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Navigate to project directory
+cd sustainlyfrontend
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Install dependencies using pnpm
+pnpm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+# Start the development server
+pnpm dev
 ```
 
-**Edit a file directly in GitHub**
+The application will be available at `http://localhost:5173`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Development
 
-**Use GitHub Codespaces**
+### Project Structure
+```
+sustainlyfrontend/
+├── src/
+│   ├── components/    # Reusable UI components
+│   ├── pages/        # Page components
+│   ├── App.tsx       # Main application component
+│   └── main.tsx      # Application entry point
+└── public/           # Static assets
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Available Scripts
 
-## What technologies are used for this project?
+- `pnpm dev` - Start development server
+- `pnpm build` - Build for production
+- `pnpm preview` - Preview production build locally
+- `pnpm lint` - Run ESLint
+- `pnpm test` - Run tests (when implemented)
 
-This project is built with .
+## Contributing
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## How can I deploy this project?
+## License
 
-Simply open [Lovable](https://lovable.dev/projects/8887bd81-aa56-4ad0-9c69-0c07d942db02) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+This project is licensed under the MIT License - see the LICENSE file for details.
