@@ -1,4 +1,3 @@
-
 import { useMemo } from 'react';
 import AnimatedNumber from './AnimatedNumber';
 
@@ -8,17 +7,10 @@ interface ScoreDisplayProps {
 
 const ScoreDisplay = ({ score }: ScoreDisplayProps) => {
   const scoreColor = useMemo(() => {
-    if (score >= 80) return 'bg-eco-green text-white';
-    if (score >= 60) return 'bg-eco-yellow text-eco-text';
-    if (score >= 40) return 'bg-eco-orange text-white';
-    return 'bg-eco-red text-white';
-  }, [score]);
-
-  const ringColor = useMemo(() => {
-    if (score >= 80) return 'eco-green';
-    if (score >= 60) return 'eco-yellow';
-    if (score >= 40) return 'eco-orange';
-    return 'eco-red';
+    if (score >= 80) return 'bg-[#4CAF50] text-white'; // Green for good scores
+    if (score >= 60) return 'bg-[#FFC107] text-white'; // Yellow for moderate scores
+    if (score >= 40) return 'bg-[#FF9800] text-white'; // Orange for concerning scores
+    return 'bg-[#FF5252] text-white'; // Red for poor scores
   }, [score]);
 
   return (
@@ -29,31 +21,15 @@ const ScoreDisplay = ({ score }: ScoreDisplayProps) => {
         </span>
       </div>
       
-      <div 
-        className={`score-ring h-48 w-48 ${scoreColor}`}
-        style={{ 
-          boxShadow: `0 0 35px rgba(0, 0, 0, 0.1)`,
-        }}
-      >
+      <div className={`relative flex h-48 w-48 items-center justify-center rounded-full ${scoreColor}`}>
         <div className="z-10 flex flex-col items-center justify-center text-center">
-          <span className="score-text">
+          <span className="text-5xl font-bold">
             <AnimatedNumber value={score} />
           </span>
-          <span className="mt-1 text-sm font-medium opacity-0 animate-fade-in" style={{ animationDelay: '0.6s' }}>
+          <span className="mt-1 text-sm font-medium">
             out of 100
           </span>
         </div>
-        
-        <div 
-          className="absolute inset-0 rounded-full opacity-10"
-          style={{ backgroundColor: `var(--tw-color-${ringColor})` }}
-        ></div>
-      </div>
-      
-      <div className="mt-4 max-w-xs text-center opacity-0 animate-fade-in" style={{ animationDelay: '0.7s' }}>
-        <p className="text-sm text-gray-600">
-          This product has {score >= 70 ? 'excellent' : score >= 50 ? 'good' : 'concerning'} sustainability metrics
-        </p>
       </div>
     </div>
   );
