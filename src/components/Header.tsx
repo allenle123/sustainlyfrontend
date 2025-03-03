@@ -1,0 +1,113 @@
+
+import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { Button } from "@/components/ui/button";
+import { Leaf, Menu, X, User, LogIn } from "lucide-react";
+
+const Header = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
+  
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  
+  const isActive = (path: string) => location.pathname === path;
+  
+  return (
+    <header className="sticky top-0 z-50 w-full border-b border-eco-border bg-white/80 backdrop-blur-sm">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-2">
+          <Leaf className="h-6 w-6 text-eco-green" />
+          <span className="text-xl font-bold">Sustainly</span>
+        </Link>
+        
+        {/* Desktop Navigation */}
+        <nav className="hidden items-center gap-6 md:flex">
+          <Link 
+            to="/" 
+            className={`text-sm font-medium transition-colors hover:text-eco-green ${isActive('/') ? 'text-eco-green' : 'text-eco-text'}`}
+          >
+            Home
+          </Link>
+          <Link 
+            to="/product" 
+            className={`text-sm font-medium transition-colors hover:text-eco-green ${isActive('/product') ? 'text-eco-green' : 'text-eco-text'}`}
+          >
+            Product
+          </Link>
+          <Link 
+            to="/about" 
+            className={`text-sm font-medium transition-colors hover:text-eco-green ${isActive('/about') ? 'text-eco-green' : 'text-eco-text'}`}
+          >
+            About
+          </Link>
+        </nav>
+        
+        {/* Auth Buttons (Desktop) */}
+        <div className="hidden items-center gap-2 md:flex">
+          <Button variant="outline" size="sm" className="gap-1">
+            <LogIn className="h-4 w-4" />
+            Sign In
+          </Button>
+          <Button size="sm" className="gap-1 bg-eco-green hover:bg-eco-green/90">
+            <User className="h-4 w-4" />
+            Sign Up
+          </Button>
+        </div>
+        
+        {/* Mobile Menu Button */}
+        <button 
+          className="inline-flex items-center justify-center rounded-md p-2 text-eco-text md:hidden" 
+          onClick={toggleMenu}
+        >
+          {isMenuOpen ? (
+            <X className="h-6 w-6" />
+          ) : (
+            <Menu className="h-6 w-6" />
+          )}
+        </button>
+      </div>
+      
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <div className="border-b border-eco-border bg-white md:hidden">
+          <div className="space-y-1 px-4 py-3">
+            <Link 
+              to="/" 
+              className={`block rounded-md px-3 py-2 text-base font-medium ${isActive('/') ? 'bg-eco-green/10 text-eco-green' : 'text-eco-text hover:bg-eco-green/5 hover:text-eco-green'}`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Home
+            </Link>
+            <Link 
+              to="/product" 
+              className={`block rounded-md px-3 py-2 text-base font-medium ${isActive('/product') ? 'bg-eco-green/10 text-eco-green' : 'text-eco-text hover:bg-eco-green/5 hover:text-eco-green'}`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Product
+            </Link>
+            <Link 
+              to="/about" 
+              className={`block rounded-md px-3 py-2 text-base font-medium ${isActive('/about') ? 'bg-eco-green/10 text-eco-green' : 'text-eco-text hover:bg-eco-green/5 hover:text-eco-green'}`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              About
+            </Link>
+            <div className="mt-4 flex flex-col gap-2 pt-2 border-t border-eco-border">
+              <Button variant="outline" className="w-full justify-start gap-1">
+                <LogIn className="h-4 w-4" />
+                Sign In
+              </Button>
+              <Button className="w-full justify-start gap-1 bg-eco-green hover:bg-eco-green/90">
+                <User className="h-4 w-4" />
+                Sign Up
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+};
+
+export default Header;
