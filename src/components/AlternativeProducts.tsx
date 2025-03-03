@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import ProductImage from './ProductImage';
 
@@ -51,27 +50,32 @@ const AlternativeProductCard = ({ product }: { product: AlternativeProductProps 
 const AlternativeProducts = ({ products }: AlternativeProductsProps) => {
   const [isVisible, setIsVisible] = useState(true);
 
-  if (!products || products.length === 0) {
-    return null;
-  }
-
   return (
     <section className="mt-12 opacity-0 animate-fade-in" style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}>
       <div className="mb-6 flex items-center justify-between">
         <h2 className="text-xl font-bold tracking-tight">Alternative Products</h2>
-        <button 
-          onClick={() => setIsVisible(!isVisible)}
-          className="text-sm text-gray-500 hover:text-gray-700"
-        >
-          {isVisible ? 'Hide' : 'Show'}
-        </button>
+        {products.length > 0 && (
+          <button 
+            onClick={() => setIsVisible(!isVisible)}
+            className="text-sm text-gray-500 hover:text-gray-700"
+          >
+            {isVisible ? 'Hide' : 'Show'}
+          </button>
+        )}
       </div>
       
       {isVisible && (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {products.map((product) => (
-            <AlternativeProductCard key={product.id} product={product} />
-          ))}
+          {products.length > 0 ? (
+            products.map((product) => (
+              <AlternativeProductCard key={product.id} product={product} />
+            ))
+          ) : (
+            <div className="col-span-full text-center py-8">
+              <p className="text-gray-500">No alternative products found with better sustainability scores.</p>
+              <p className="text-sm text-gray-400 mt-2">We'll keep searching for more sustainable alternatives.</p>
+            </div>
+          )}
         </div>
       )}
     </section>
