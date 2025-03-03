@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -14,7 +13,7 @@ const Header = () => {
   
   return (
     <header className="sticky top-0 z-50 w-full border-b border-eco-border bg-white/80 backdrop-blur-sm">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
+      <div className="mx-auto flex h-16 max-w-6xl items-center px-4 sm:px-6">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
           <Leaf className="h-6 w-6 text-eco-green" />
@@ -22,18 +21,12 @@ const Header = () => {
         </Link>
         
         {/* Desktop Navigation */}
-        <nav className="hidden items-center gap-6 md:flex">
+        <nav className="ml-8 hidden items-center gap-6 md:flex">
           <Link 
             to="/" 
             className={`text-sm font-medium transition-colors hover:text-eco-green ${isActive('/') ? 'text-eco-green' : 'text-eco-text'}`}
           >
             Home
-          </Link>
-          <Link 
-            to="/product" 
-            className={`text-sm font-medium transition-colors hover:text-eco-green ${isActive('/product') ? 'text-eco-green' : 'text-eco-text'}`}
-          >
-            Product
           </Link>
           <Link 
             to="/about" 
@@ -44,7 +37,7 @@ const Header = () => {
         </nav>
         
         {/* Auth Buttons (Desktop) */}
-        <div className="hidden items-center gap-2 md:flex">
+        <div className="ml-auto hidden items-center gap-4 md:flex">
           <Button variant="outline" size="sm" className="gap-1">
             <LogIn className="h-4 w-4" />
             Sign In
@@ -57,7 +50,7 @@ const Header = () => {
         
         {/* Mobile Menu Button */}
         <button 
-          className="inline-flex items-center justify-center rounded-md p-2 text-eco-text md:hidden" 
+          className="ml-auto inline-flex items-center justify-center rounded-md p-2 text-eco-text md:hidden" 
           onClick={toggleMenu}
         >
           {isMenuOpen ? (
@@ -78,13 +71,6 @@ const Header = () => {
               onClick={() => setIsMenuOpen(false)}
             >
               Home
-            </Link>
-            <Link 
-              to="/product" 
-              className={`block rounded-md px-3 py-2 text-base font-medium ${isActive('/product') ? 'bg-eco-green/10 text-eco-green' : 'text-eco-text hover:bg-eco-green/5 hover:text-eco-green'}`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Product
             </Link>
             <Link 
               to="/about" 
