@@ -51,15 +51,17 @@ jobs:
     if: github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+      
       - name: Deploy to Beta
-        # Add your beta deployment steps here
-        # Example: Deploy to Vercel Preview/Netlify Deploy Preview
+        run: echo "Add your beta deployment command here"
         
   deploy-production:
     needs: build-and-test
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+      
       - name: Deploy to Production
-        # Add your production deployment steps here
-        # Example: Deploy to Vercel Production/Netlify Production
+        run: echo "Add your production deployment command here"
