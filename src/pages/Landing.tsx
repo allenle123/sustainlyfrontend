@@ -74,7 +74,7 @@ const Landing = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center px-4 py-12">
+    <div className="flex min-h-[calc(100vh-64px)] flex-col items-center justify-center px-4 py-12">
       <div className="w-full max-w-xl text-center mb-16">
         <h1 className="text-6xl font-bold text-eco-green mb-4">Sustainly</h1>
         <p className="text-xl text-eco-green">Discover the environmental impact of your products</p>
