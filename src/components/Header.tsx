@@ -1,11 +1,15 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Leaf, Menu, X, User, LogIn } from "lucide-react";
+import { Leaf, Menu, X } from "lucide-react";
+import { SignIn } from './SignIn';
+import { UserButton } from './UserButton';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const { user } = useAuth();
   
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   
@@ -38,14 +42,7 @@ const Header = () => {
         
         {/* Auth Buttons (Desktop) */}
         <div className="ml-auto hidden items-center gap-4 md:flex">
-          <Button variant="outline" size="sm" className="gap-1">
-            <LogIn className="h-4 w-4" />
-            Sign In
-          </Button>
-          <Button size="sm" className="gap-1 bg-eco-green hover:bg-eco-green/90">
-            <User className="h-4 w-4" />
-            Sign Up
-          </Button>
+          {user ? <UserButton /> : <SignIn />}
         </div>
         
         {/* Mobile Menu Button */}
@@ -80,14 +77,7 @@ const Header = () => {
               About
             </Link>
             <div className="mt-4 flex flex-col gap-2 pt-2 border-t border-eco-border">
-              <Button variant="outline" className="w-full justify-start gap-1">
-                <LogIn className="h-4 w-4" />
-                Sign In
-              </Button>
-              <Button className="w-full justify-start gap-1 bg-eco-green hover:bg-eco-green/90">
-                <User className="h-4 w-4" />
-                Sign Up
-              </Button>
+              {user ? <UserButton /> : <SignIn />}
             </div>
           </div>
         </div>
