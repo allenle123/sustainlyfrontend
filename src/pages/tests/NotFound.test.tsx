@@ -1,28 +1,29 @@
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import NotFound from '../NotFound';
 
 describe('NotFound Component', () => {
-    let mockConsoleError: jest.SpyInstance;
+    let mockConsoleError: ReturnType<typeof vi.spyOn>;
 
     beforeEach(() => {
-        mockConsoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
+        mockConsoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
     });
 
     afterEach(() => {
         mockConsoleError.mockRestore();
     });
 
-  it('renders the component without crashing', () => {
-    render(
-      <MemoryRouter initialEntries={['/non-existent-route']}>
-        <NotFound />
-      </MemoryRouter>
-    );
-    const notFoundContainer = screen.getByText(/404/i);
-    expect(notFoundContainer).toBeInTheDocument();
-  });
+    it('renders the component without crashing', () => {
+        render(
+            <MemoryRouter initialEntries={['/non-existent-route']}>
+                <NotFound />
+            </MemoryRouter>
+        );
+        const notFoundContainer = screen.getByText(/404/i);
+        expect(notFoundContainer).toBeInTheDocument();
+    });
 
   it('displays the correct 404 heading', () => {
     render(
