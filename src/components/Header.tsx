@@ -47,6 +47,7 @@ const Header = () => {
 
 				{/* Mobile Menu Button */}
 				<button
+					type="button"
 					className="ml-auto inline-flex items-center justify-center rounded-md p-2 text-eco-text md:hidden"
 					onClick={toggleMenu}
 				>
