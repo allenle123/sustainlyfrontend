@@ -9,12 +9,40 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/contexts/AuthContext';
+import { toast } from '@/components/ui/use-toast';
 import { LogIn } from 'lucide-react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export function SignIn() {
-	const { signInWithGoogle } = useAuth();
+	const { signIn, signInWithGoogle } = useAuth();
 	const [isOpen, setIsOpen] = useState(false);
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [loading, setLoading] = useState(false);
+	const navigate = useNavigate();
+
+	const handleEmailSignIn = async (e: React.FormEvent) => {
+		e.preventDefault();
+		try {
+			setLoading(true);
+			await signIn(email, password);
+			setIsOpen(false);
+			toast({
+				title: "Success!",
+				description: "You have successfully signed in.",
+			});
+		} catch (error) {
+			console.error('Error signing in:', error);
+			toast({
+				title: "Error",
+				description: "Failed to sign in. Please check your credentials.",
+				variant: "destructive"
+			});
+		} finally {
+			setLoading(false);
+		}
+	};
 
 	const handleGoogleSignIn = async () => {
 		try {
@@ -22,7 +50,17 @@ export function SignIn() {
 			setIsOpen(false);
 		} catch (error) {
 			console.error('Error signing in with Google:', error);
+			toast({
+				title: "Error",
+				description: "Failed to sign in with Google.",
+				variant: "destructive"
+			});
 		}
+	};
+
+	const handleCreateAccount = () => {
+		setIsOpen(false);
+		navigate('/signup');
 	};
 
 	return (
@@ -45,8 +83,8 @@ export function SignIn() {
 						Continue with your preferred method
 					</DialogDescription>
 				</DialogHeader>
-				<div className="flex flex-col gap-4 py-4">
-					<Button variant="outline" className="w-full gap-2" onClick={handleGoogleSignIn}>
+				<form onSubmit={handleEmailSignIn} className="flex flex-col gap-4 py-4">
+					<Button variant="outline" className="w-full gap-2" onClick={handleGoogleSignIn} type="button">
 						<svg className="h-5 w-5" viewBox="0 0 24 24">
 							<path
 								d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -75,20 +113,36 @@ export function SignIn() {
 							<span className="bg-background px-2 text-muted-foreground">or</span>
 						</div>
 					</div>
-					<Input type="email" placeholder="Email" />
-					<Input type="password" placeholder="Password" />
-					<Button className="w-full bg-gradient-to-r from-pink-500 to-orange-400 hover:from-pink-600 hover:to-orange-500">
-						Sign In
+					<Input 
+						type="email" 
+						placeholder="Email" 
+						value={email}
+						onChange={(e) => setEmail(e.target.value)}
+						required 
+					/>
+					<Input 
+						type="password" 
+						placeholder="Password" 
+						value={password}
+						onChange={(e) => setPassword(e.target.value)}
+						required 
+					/>
+					<Button 
+						type="submit" 
+						className="w-full bg-green-600 hover:bg-green-700 text-white"
+						disabled={loading}
+					>
+						{loading ? 'Signing in...' : 'Sign In'}
 					</Button>
 					<div className="flex justify-between text-sm text-muted-foreground">
-						<a href="#" className="hover:text-foreground">
+						<button type="button" onClick={handleCreateAccount} className="hover:text-foreground">
 							Don't have an account? Create Account
-						</a>
+						</button>
 						<a href="#" className="hover:text-foreground">
 							Forgot Password?
 						</a>
 					</div>
-				</div>
+				</form>
 			</DialogContent>
 		</Dialog>
 	);
