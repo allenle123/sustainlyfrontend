@@ -1,47 +1,49 @@
-import { useAuth } from "@/contexts/AuthContext"
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { LogOut, User } from "lucide-react"
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { useAuth } from '@/contexts/AuthContext';
+import { LogOut, User } from 'lucide-react';
 
 export function UserButton() {
-  const { user, signOut } = useAuth()
-  
-  if (!user) return null
-  
-  // Log user data to see what we get from Google
-  console.log('User metadata:', user.user_metadata)
-  
-  // Get user's initials for the avatar fallback
-  const initials = user.email ? user.email.charAt(0).toUpperCase() : 'U'
-  
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger className="outline-none">
-        <Avatar className="h-8 w-8">
-          <AvatarImage src={user.user_metadata?.avatar_url} />
-          <AvatarFallback>{initials}</AvatarFallback>
-        </Avatar>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel>
-          <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">{user.user_metadata?.full_name || 'User'}</p>
-            <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
-          </div>
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => signOut()} className="cursor-pointer">
-          <LogOut className="mr-2 h-4 w-4" />
-          <span>Log out</span>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  )
+	const { user, signOut } = useAuth();
+
+	if (!user) return null;
+
+	// Log user data to see what we get from Google
+	console.log('User metadata:', user.user_metadata);
+
+	// Get user's initials for the avatar fallback
+	const initials = user.email ? user.email.charAt(0).toUpperCase() : 'U';
+
+	return (
+		<DropdownMenu>
+			<DropdownMenuTrigger className="outline-none">
+				<Avatar className="h-8 w-8">
+					<AvatarImage src={user.user_metadata?.avatar_url} />
+					<AvatarFallback>{initials}</AvatarFallback>
+				</Avatar>
+			</DropdownMenuTrigger>
+			<DropdownMenuContent align="end" className="w-56">
+				<DropdownMenuLabel>
+					<div className="flex flex-col space-y-1">
+						<p className="text-sm font-medium leading-none">
+							{user.user_metadata?.full_name || 'User'}
+						</p>
+						<p className="text-xs leading-none text-muted-foreground">{user.email}</p>
+					</div>
+				</DropdownMenuLabel>
+				<DropdownMenuSeparator />
+				<DropdownMenuItem onClick={() => signOut()} className="cursor-pointer">
+					<LogOut className="mr-2 h-4 w-4" />
+					<span>Log out</span>
+				</DropdownMenuItem>
+			</DropdownMenuContent>
+		</DropdownMenu>
+	);
 }
