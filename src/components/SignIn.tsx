@@ -29,15 +29,15 @@ export function SignIn() {
 			await signIn(email, password);
 			setIsOpen(false);
 			toast({
-				title: "Success!",
-				description: "You have successfully signed in.",
+				title: 'Success!',
+				description: 'You have successfully signed in.',
 			});
 		} catch (error) {
 			console.error('Error signing in:', error);
 			toast({
-				title: "Error",
-				description: "Failed to sign in. Please check your credentials.",
-				variant: "destructive"
+				title: 'Error',
+				description: 'Failed to sign in. Please check your credentials.',
+				variant: 'destructive',
 			});
 		} finally {
 			setLoading(false);
@@ -51,9 +51,9 @@ export function SignIn() {
 		} catch (error) {
 			console.error('Error signing in with Google:', error);
 			toast({
-				title: "Error",
-				description: "Failed to sign in with Google.",
-				variant: "destructive"
+				title: 'Error',
+				description: 'Failed to sign in with Google.',
+				variant: 'destructive',
 			});
 		}
 	};
@@ -84,8 +84,14 @@ export function SignIn() {
 					</DialogDescription>
 				</DialogHeader>
 				<form onSubmit={handleEmailSignIn} className="flex flex-col gap-4 py-4">
-					<Button variant="outline" className="w-full gap-2" onClick={handleGoogleSignIn} type="button">
-						<svg className="h-5 w-5" viewBox="0 0 24 24">
+					<Button
+						variant="outline"
+						className="w-full gap-2"
+						onClick={handleGoogleSignIn}
+						type="button"
+					>
+						<svg className="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
+							<title>SignIn</title>
 							<path
 								d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
 								fill="#4285F4"
@@ -113,31 +119,36 @@ export function SignIn() {
 							<span className="bg-background px-2 text-muted-foreground">or</span>
 						</div>
 					</div>
-					<Input 
-						type="email" 
-						placeholder="Email" 
+					<Input
+						type="email"
+						placeholder="Email"
 						value={email}
 						onChange={(e) => setEmail(e.target.value)}
-						required 
+						required
 					/>
-					<Input 
-						type="password" 
-						placeholder="Password" 
+					<Input
+						type="password"
+						placeholder="Password"
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
-						required 
+						required
 					/>
-					<Button 
-						type="submit" 
+					<Button
+						type="submit"
 						className="w-full bg-green-600 hover:bg-green-700 text-white"
 						disabled={loading}
 					>
 						{loading ? 'Signing in...' : 'Sign In'}
 					</Button>
 					<div className="flex justify-between text-sm text-muted-foreground">
-						<button type="button" onClick={handleCreateAccount} className="hover:text-foreground">
+						<button
+							type="button"
+							onClick={handleCreateAccount}
+							className="hover:text-foreground"
+						>
 							Don't have an account? Create Account
 						</button>
+						{/* TODO */}
 						<a href="#" className="hover:text-foreground">
 							Forgot Password?
 						</a>
