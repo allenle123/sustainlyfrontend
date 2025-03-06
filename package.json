@@ -16,7 +16,8 @@
 		"coverage": "vitest run --coverage",
 		"lint": "biome lint .",
 		"format": "biome format . --write",
-		"check": "biome check --apply ."
+		"check": "biome check --apply .",
+		"clean": "rm -rf node_modules && rm -f package-lock.json && rm -rf dist && rm -rf coverage"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^3.9.0",
