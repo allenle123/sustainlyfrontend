@@ -19,7 +19,7 @@
 		"jsx": "react-jsx",
 
 		/* Testing */
-		"types": ["jest", "@testing-library/jest-dom", "node"],
+		"types": ["vitest/globals", "@testing-library/jest-dom", "node"],
 		"esModuleInterop": true,
 
 		/* Linting */
