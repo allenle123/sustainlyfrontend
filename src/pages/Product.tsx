@@ -100,7 +100,7 @@ const Product = () => {
 	if (!isLoaded || !productData) {
 		return (
 			<div className="flex min-h-screen items-center justify-center">
-				<div className="h-12 w-12 animate-spin rounded-full border-4 border-eco-light-gray border-t-primary"></div>
+				<div className="h-12 w-12 animate-spin rounded-full border-4 border-eco-light-gray border-t-primary" />
 			</div>
 		);
 	}

@@ -25,6 +25,7 @@ export default defineConfig({
 				'vitest.config.ts',
 				'src/main.tsx',
 				'src/vite-env.d.ts',
+				'src/App.tsx',
 			],
 		},
 		alias: {

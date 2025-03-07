@@ -19,16 +19,17 @@ export default function SignUp() {
 			setLoading(true);
 			await signUp(email, password);
 			toast({
-				title: "Success!",
-				description: "Your account has been created. Please check your email for verification.",
+				title: 'Success!',
+				description:
+					'Your account has been created. Please check your email for verification.',
 			});
 			navigate('/');
 		} catch (error) {
 			console.error('Error signing up:', error);
 			toast({
-				title: "Error",
-				description: "Failed to create account. Please try again.",
-				variant: "destructive"
+				title: 'Error',
+				description: 'Failed to create account. Please try again.',
+				variant: 'destructive',
 			});
 		} finally {
 			setLoading(false);
@@ -42,9 +43,9 @@ export default function SignUp() {
 		} catch (error) {
 			console.error('Error signing in with Google:', error);
 			toast({
-				title: "Error",
-				description: "Failed to sign in with Google.",
-				variant: "destructive"
+				title: 'Error',
+				description: 'Failed to sign in with Google.',
+				variant: 'destructive',
 			});
 		}
 	};
@@ -59,7 +60,7 @@ export default function SignUp() {
 			<motion.div
 				initial={{ x: -100, opacity: 0 }}
 				animate={{ x: 0, opacity: 1 }}
-				transition={{ type: "spring", duration: 0.8 }}
+				transition={{ type: 'spring', duration: 0.8 }}
 				className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r"
 			>
 				<div className="absolute inset-0 bg-green-600" />
@@ -74,6 +75,7 @@ export default function SignUp() {
 						strokeLinejoin="round"
 						className="mr-2 h-6 w-6"
 					>
+						<title>Sign Up</title>
 						<path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3" />
 					</svg>
 					Sustainly
@@ -81,7 +83,8 @@ export default function SignUp() {
 				<div className="relative z-20 mt-auto">
 					<blockquote className="space-y-2">
 						<p className="text-lg">
-							"Join our community of conscious consumers and make a positive impact on the environment."
+							"Join our community of conscious consumers and make a positive impact on
+							the environment."
 						</p>
 					</blockquote>
 				</div>
@@ -89,7 +92,7 @@ export default function SignUp() {
 			<motion.div
 				initial={{ x: 100, opacity: 0 }}
 				animate={{ x: 0, opacity: 1 }}
-				transition={{ type: "spring", duration: 0.8, delay: 0.2 }}
+				transition={{ type: 'spring', duration: 0.8, delay: 0.2 }}
 				className="lg:p-8"
 			>
 				<div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
@@ -145,8 +148,13 @@ export default function SignUp() {
 								</span>
 							</div>
 						</div>
-						<Button variant="outline" className="w-full gap-2" onClick={handleGoogleSignIn}>
+						<Button
+							variant="outline"
+							className="w-full gap-2"
+							onClick={handleGoogleSignIn}
+						>
 							<svg className="h-5 w-5" viewBox="0 0 24 24">
+								<title>Sign Up</title>
 								<path
 									d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
 									fill="#4285F4"
