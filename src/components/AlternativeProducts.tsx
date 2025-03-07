@@ -44,7 +44,7 @@ const AlternativeProductCard = ({ product }: { product: AlternativeProductProps 
 											? '#FF9800'
 											: '#F44336',
 						}}
-					></div>
+					/>
 					<span className="text-xs font-medium">{product.score}/100</span>
 				</div>
 			</div>
@@ -64,6 +64,7 @@ const AlternativeProducts = ({ products }: AlternativeProductsProps) => {
 				<h2 className="text-xl font-bold tracking-tight">Alternative Products</h2>
 				{products.length > 0 && (
 					<button
+						type="button"
 						onClick={() => setIsVisible(!isVisible)}
 						className="text-sm text-gray-500 hover:text-gray-700"
 					>

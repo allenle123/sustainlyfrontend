@@ -8,7 +8,7 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/contexts/AuthContext';
-import { LogOut, User } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 
 export function UserButton() {
 	const { user, signOut } = useAuth();
