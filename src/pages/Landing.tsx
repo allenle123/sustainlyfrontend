@@ -74,15 +74,15 @@ const Landing = () => {
 	};
 
 	return (
-		<div className="flex min-h-[calc(100vh-64px)] flex-col items-center justify-center px-4 py-12">
-			<div className="w-full max-w-xl text-center mb-16">
+		<div className="flex min-h-[calc(100vh-64px)] flex-col items-center justify-start px-4 pt-36 pb-12">
+			<div className="w-full max-w-xl text-center mb-12">
 				<h1 className="text-6xl font-bold text-eco-green mb-4">Sustainly</h1>
 				<p className="text-xl text-eco-green">
 					Discover the environmental impact of your products
 				</p>
 			</div>
 
-			<div className="w-full max-w-md">
+			<div className="w-full max-w-2xl">
 				<form onSubmit={handleSubmit} className="space-y-6">
 					<div>
 						<input
@@ -91,7 +91,7 @@ const Landing = () => {
 							type="text"
 							required
 							placeholder="Enter product URL"
-							className="block w-full rounded-full border-gray-300 bg-white px-6 py-4 shadow-sm transition-colors focus:border-eco-green focus:ring-eco-green/20 text-base"
+							className="block w-full max-w-2xl rounded-full border-gray-300 bg-white px-6 py-3 shadow-sm transition-colors focus:border-eco-green focus:ring-eco-green/20 text-base"
 							value={productUrl}
 							onChange={(e) => setProductUrl(e.target.value)}
 						/>
@@ -102,7 +102,7 @@ const Landing = () => {
 						<button
 							type="submit"
 							disabled={isLoading}
-							className="flex w-full justify-center rounded-full bg-eco-green px-6 py-4 text-lg font-medium text-white shadow-sm transition-colors hover:bg-eco-green/90 focus:outline-none focus:ring-2 focus:ring-eco-green focus:ring-offset-2 disabled:opacity-70"
+							className="flex w-full max-w-2xl justify-center rounded-full bg-eco-green px-6 py-3 text-lg font-medium text-white shadow-sm transition-colors hover:bg-eco-green/90 focus:outline-none focus:ring-2 focus:ring-eco-green focus:ring-offset-2 disabled:opacity-70"
 						>
 							{isLoading ? (
 								<div className="flex items-center space-x-3">
