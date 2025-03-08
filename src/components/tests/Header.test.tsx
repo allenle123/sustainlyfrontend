@@ -170,7 +170,7 @@ describe('Header Component', () => {
 
 		const header = screen.getByRole('banner');
 		expect(header).toHaveClass(
-			'sticky top-0 z-50 w-full border-b border-eco-border bg-white/80 backdrop-blur-sm'
+			'sticky top-0 z-50 w-full border-b border-eco-border bg-white/90 shadow-md backdrop-blur-sm'
 		);
 	});
 });
