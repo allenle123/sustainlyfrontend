@@ -86,7 +86,7 @@ export function SignIn() {
 				<form onSubmit={handleEmailSignIn} className="flex flex-col gap-4 py-4">
 					<Button
 						variant="outline"
-						className="w-full gap-2"
+						className="w-full gap-2 transition-colors duration-300 ease-in-out hover:bg-gray-100"
 						onClick={handleGoogleSignIn}
 						type="button"
 					>
@@ -135,21 +135,21 @@ export function SignIn() {
 					/>
 					<Button
 						type="submit"
-						className="w-full bg-green-600 hover:bg-green-700 text-white"
+						className="w-full bg-green-600 hover:bg-green-700 text-white transition-colors duration-300 ease-in-out"
 						disabled={loading}
 					>
 						{loading ? 'Signing in...' : 'Sign In'}
 					</Button>
-					<div className="flex justify-between text-sm text-muted-foreground">
+					<div className="flex flex-col gap-2 text-sm text-muted-foreground items-center">
 						<button
 							type="button"
 							onClick={handleCreateAccount}
-							className="hover:text-foreground"
+							className="hover:text-foreground text-center transition-colors duration-300 ease-in-out hover:text-green-600"
 						>
 							Don't have an account? Create Account
 						</button>
 						{/* TODO */}
-						<a href="#" className="hover:text-foreground">
+						<a href="#" className="hover:text-foreground text-center transition-colors duration-300 ease-in-out hover:text-green-600">
 							Forgot Password?
 						</a>
 					</div>
