@@ -15,7 +15,7 @@ interface AlternativeProductsProps {
 
 const AlternativeProductCard = ({ product }: { product: AlternativeProductProps }) => {
 	return (
-		<div className="eco-card flex h-full flex-col transition-all duration-300 hover:translate-y-[-4px]">
+		<div className="eco-card flex h-full flex-col transition-all duration-300 hover:translate-y-[-4px] hover:border-eco-green/30">
 			<div className="mb-2">
 				<span className="text-xs font-medium text-gray-500">{product.brand}</span>
 			</div>
@@ -61,12 +61,14 @@ const AlternativeProducts = ({ products }: AlternativeProductsProps) => {
 			style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}
 		>
 			<div className="mb-6 flex items-center justify-between">
-				<h2 className="text-xl font-bold tracking-tight">Alternative Products</h2>
+				<h2 className="text-xl font-bold tracking-tight">
+					Alternative Products
+				</h2>
 				{products.length > 0 && (
 					<button
 						type="button"
 						onClick={() => setIsVisible(!isVisible)}
-						className="text-sm text-gray-500 hover:text-gray-700"
+						className="text-sm text-gray-500 hover:text-eco-green transition-colors duration-200"
 					>
 						{isVisible ? 'Hide' : 'Show'}
 					</button>
