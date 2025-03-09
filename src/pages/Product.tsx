@@ -46,8 +46,8 @@ const Product = () => {
 
   if (!isLoaded || !productData) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="h-12 w-12 animate-spin rounded-full border-4 border-eco-light-gray border-t-eco-green"></div>
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-white to-[#F2FCE2]/70">
+        <div className="h-14 w-14 animate-spin rounded-full border-4 border-eco-light-gray border-t-eco-green border-r-[#0EA5E9]"></div>
       </div>
     );
   }
@@ -60,16 +60,16 @@ const Product = () => {
   }));
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white to-[#F2FCE2]/50">
+    <div className="min-h-screen bg-gradient-to-br from-white to-[#F2FCE2]/70">
       <div className="mx-auto flex max-w-6xl flex-col px-4 py-8 sm:px-6 md:py-12">
         <header className="mb-12 text-center">
           <div className="flex items-center justify-center gap-2">
-            <Leaf className="h-8 w-8 text-eco-green" />
-            <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-eco-green to-[#0EA5E9] bg-clip-text text-transparent">
+            <Leaf className="h-8 w-8 text-eco-green drop-shadow-md" />
+            <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-eco-green to-[#0EA5E9] bg-clip-text text-transparent drop-shadow-sm">
               Sustainly
             </h1>
           </div>
-          <p className="mt-2 text-gray-600">Evaluating the environmental impact of your product</p>
+          <p className="mt-2 text-gray-600 italic">Evaluating the environmental impact of your product</p>
         </header>
 
         <div className="relative mx-auto grid w-full max-w-5xl gap-8 md:grid-cols-2">
@@ -83,13 +83,13 @@ const Product = () => {
             />
           </div>
 
-          <div className="eco-card flex h-full items-center justify-center bg-white/80 backdrop-blur-sm border-eco-green/20 shadow-lg shadow-eco-green/5 hover:shadow-eco-green/10 transition-all">
+          <div className="eco-card flex h-full items-center justify-center bg-gradient-to-br from-white/90 to-[#F2FCE2]/50 backdrop-blur-sm border-eco-green/20 shadow-lg shadow-eco-green/5 hover:shadow-eco-green/10 transition-all">
             <ScoreDisplay score={productData.sustainabilityScore} />
           </div>
         </div>
 
-        <h2 className="mt-16 mb-8 text-center text-2xl font-bold text-eco-text">
-          <span className="border-b-2 border-eco-green pb-1">Sustainability Breakdown</span>
+        <h2 className="mt-16 mb-8 text-center text-2xl font-bold bg-gradient-to-r from-eco-green to-[#0EA5E9] bg-clip-text text-transparent">
+          <span className="border-b-2 border-eco-green/30 pb-1">Sustainability Breakdown</span>
         </h2>
 
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">

@@ -19,18 +19,18 @@ const ProductDisplay = ({
   return (
     <div className="product-container flex h-full flex-col">
       <div className="mb-3">
-        <span className="inline-block rounded-full bg-eco-green/10 text-eco-green px-3 py-1 text-xs font-medium tracking-wider">
+        <span className="inline-block rounded-full bg-gradient-to-r from-eco-green/20 to-[#0EA5E9]/20 text-eco-green px-3 py-1 text-xs font-medium tracking-wider">
           {category.toUpperCase()}
         </span>
       </div>
       
-      <h1 className="mb-2 text-2xl font-bold tracking-tight text-eco-text">{name}</h1>
+      <h1 className="mb-2 text-2xl font-bold tracking-tight bg-gradient-to-r from-eco-green to-[#0EA5E9] bg-clip-text text-transparent">{name}</h1>
       
       <div className="mb-4 text-sm text-gray-500">
-        <span className="font-medium">By {brand}</span>
+        <span className="font-medium">By <span className="text-eco-green/80">{brand}</span></span>
       </div>
       
-      <div className="flex-grow relative overflow-hidden rounded-lg bg-eco-light-gray p-4 shadow-inner">
+      <div className="flex-grow relative overflow-hidden rounded-lg bg-gradient-to-br from-eco-light-gray to-white p-4 shadow-inner">
         <ProductImage 
           src={imageSrc} 
           alt={name}

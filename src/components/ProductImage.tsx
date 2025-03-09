@@ -30,7 +30,7 @@ const ProductImage = ({ src, alt, className }: ProductImageProps) => {
   return (
     <div className={cn("relative overflow-hidden rounded-lg", className)}>
       {!isLoaded && (
-        <div className="absolute inset-0 flex items-center justify-center bg-eco-light-gray animate-pulse">
+        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-eco-light-gray to-white animate-pulse">
           <span className="sr-only">Loading...</span>
         </div>
       )}
@@ -42,10 +42,10 @@ const ProductImage = ({ src, alt, className }: ProductImageProps) => {
           isLoaded ? "opacity-100" : "opacity-0"
         )}
         style={{
-          filter: "drop-shadow(0 4px 6px rgba(37, 197, 91, 0.2))"
+          filter: "drop-shadow(0 4px 10px rgba(37, 197, 91, 0.3))"
         }}
       />
-      <div className="absolute inset-0 rounded-lg ring-1 ring-eco-green/10"></div>
+      <div className="absolute inset-0 rounded-lg ring-1 ring-[#0EA5E9]/10 shadow-lg shadow-eco-green/10"></div>
     </div>
   );
 };
