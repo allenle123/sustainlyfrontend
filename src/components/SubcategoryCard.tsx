@@ -33,7 +33,10 @@ const SubcategoryCard = ({ title, score, description, index }: SubcategoryCardPr
 
 	return (
 		<div
-			className={cn('opacity-0 animate-fade-in eco-card h-full', 'subcategory-card group')}
+			className={cn(
+				'opacity-0 animate-fade-in eco-card h-full subcategory-card group hover:border-eco-green/30',
+				'transition-all duration-300'
+			)}
 			style={{ animationDelay: `${0.3 + index * 0.1}s` }}
 		>
 			<div className="mb-2">
@@ -50,6 +53,7 @@ const SubcategoryCard = ({ title, score, description, index }: SubcategoryCardPr
 			</div>
 
 			<p className="text-sm text-gray-600">{description}</p>
+			<div className="absolute top-0 right-0 w-6 h-6 bg-eco-green/10 rounded-bl-xl"></div>
 		</div>
 	);
 };
