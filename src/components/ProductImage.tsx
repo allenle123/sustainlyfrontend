@@ -41,7 +41,11 @@ const ProductImage = ({ src, alt, className }: ProductImageProps) => {
           "h-full w-full object-contain transition-opacity duration-500", 
           isLoaded ? "opacity-100" : "opacity-0"
         )}
+        style={{
+          filter: "drop-shadow(0 4px 6px rgba(37, 197, 91, 0.2))"
+        }}
       />
+      <div className="absolute inset-0 rounded-lg ring-1 ring-eco-green/10"></div>
     </div>
   );
 };
