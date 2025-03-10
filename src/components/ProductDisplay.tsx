@@ -20,11 +20,11 @@ const ProductDisplay = ({ name, description, imageSrc, brand, category }: Produc
 			<h1 className="mb-2 text-2xl font-bold tracking-tight">{name}</h1>
 
 			<div className="mb-4 text-sm text-gray-500">
-				<span className="border-l-2 border-eco-green/30 pl-2">{brand}</span>
+				<span className="border-l-2 border-eco-green pl-2">{brand}</span>
 			</div>
 
 			<div className="flex-grow relative overflow-hidden rounded-lg bg-eco-light-gray p-4 shadow-inner">
-				<div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-eco-green/20 to-transparent"></div>
+				<div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-eco-green/50 to-transparent"></div>
 				<ProductImage
 					src={imageSrc}
 					alt={name}
