@@ -15,12 +15,12 @@ interface AlternativeProductsProps {
 
 const AlternativeProductCard = ({ product }: { product: AlternativeProductProps }) => {
 	return (
-		<div className="eco-card flex h-full flex-col transition-all duration-300 hover:translate-y-[-4px] hover:border-eco-green/30">
+		<div className="eco-card flex h-full flex-col transition-all duration-300 hover:translate-y-[-4px]">
 			<div className="mb-2">
 				<span className="text-xs font-medium text-gray-500">{product.brand}</span>
 			</div>
 
-			<div className="relative mb-3 flex-grow overflow-hidden rounded-lg bg-eco-light-gray p-2">
+			<div className="relative mb-3 flex-grow overflow-hidden">
 				<ProductImage
 					src={product.imageSrc}
 					alt={product.name}

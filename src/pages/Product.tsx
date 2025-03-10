@@ -105,26 +105,46 @@ const Product = () => {
 		);
 	}
 
-	// Convert aspects object to array format expected by SubcategoryCard
-	const subcategories = Object.entries(productData.aspects).map(([key, value]) => ({
-		title: key.charAt(0).toUpperCase() + key.slice(1),
-		score: value.score,
-		description: value.shortExplanation,
-	}));
+	// Define the specific order for subcategories
+	const orderedSubcategories = [
+		{
+			key: 'materials',
+			title: 'Materials',
+			score: productData.aspects.materials.score,
+			maxScore: productData.aspects.materials.maxScore,
+			description: productData.aspects.materials.shortExplanation,
+			fullExplanation: productData.aspects.materials.explanation,
+		},
+		{
+			key: 'manufacturing',
+			title: 'Manufacturing',
+			score: productData.aspects.manufacturing.score,
+			maxScore: productData.aspects.manufacturing.maxScore,
+			description: productData.aspects.manufacturing.shortExplanation,
+			fullExplanation: productData.aspects.manufacturing.explanation,
+		},
+		{
+			key: 'lifecycle',
+			title: 'Lifecycle',
+			score: productData.aspects.lifecycle.score,
+			maxScore: productData.aspects.lifecycle.maxScore,
+			description: productData.aspects.lifecycle.shortExplanation,
+			fullExplanation: productData.aspects.lifecycle.explanation,
+		},
+		{
+			key: 'certifications',
+			title: 'Certifications',
+			score: productData.aspects.certifications.score,
+			maxScore: productData.aspects.certifications.maxScore,
+			description: productData.aspects.certifications.shortExplanation,
+			fullExplanation: productData.aspects.certifications.explanation,
+		},
+	];
 
 	return (
-		<div className="mx-auto flex min-h-screen max-w-6xl flex-col px-4 py-8 sm:px-6 md:py-12 bg-gradient-to-b from-white to-green-50/30">
-			<header className="mb-12 text-center">
-				<h1 className="text-3xl font-bold tracking-tight text-eco-text">
-					Sustainly
-				</h1>
-				<p className="mt-2 text-gray-600">
-					Evaluating the environmental impact of your product
-				</p>
-			</header>
-
+		<div className="mx-auto flex min-h-screen max-w-6xl flex-col px-4 py-8 sm:px-6 md:py-12">
 			<div className="relative mx-auto grid w-full max-w-5xl gap-8 md:grid-cols-2">
-				<div className="eco-card h-full border-l-4 border-l-eco-green/40">
+				<div className="eco-card h-full">
 					<ProductDisplay
 						name={productData.title}
 						description=""
@@ -134,18 +154,20 @@ const Product = () => {
 					/>
 				</div>
 
-				<div className="eco-card flex h-full items-center justify-center shadow-[0_0_15px_rgba(37,197,91,0.1)]">
+				<div className="eco-card flex h-full items-center justify-center">
 					<ScoreDisplay score={productData.sustainabilityScore} />
 				</div>
 			</div>
 
 			<div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-				{subcategories.map((subcategory, index) => (
+				{orderedSubcategories.map((subcategory, index) => (
 					<SubcategoryCard
-						key={subcategory.title}
+						key={subcategory.key}
 						title={subcategory.title}
 						score={subcategory.score}
+						maxScore={subcategory.maxScore}
 						description={subcategory.description}
+						fullExplanation={subcategory.fullExplanation}
 						index={index}
 					/>
 				))}
