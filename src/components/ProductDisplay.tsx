@@ -24,7 +24,6 @@ const ProductDisplay = ({ name, description, imageSrc, brand, category }: Produc
 			</div>
 
 			<div className="flex-grow relative overflow-hidden rounded-lg bg-eco-light-gray p-4 shadow-inner">
-				<div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-eco-green/50 to-transparent"></div>
 				<ProductImage
 					src={imageSrc}
 					alt={name}
