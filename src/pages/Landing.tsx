@@ -1,3 +1,4 @@
+import { useAuth } from '@/contexts/AuthContext';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -17,6 +18,7 @@ const Landing = () => {
 	const [error, setError] = useState('');
 	const [loadingMessage, setLoadingMessage] = useState(loadingStates[0]);
 	const navigate = useNavigate();
+	const { user, session } = useAuth();
 
 	useEffect(() => {
 		if (isLoading) {
@@ -50,13 +52,21 @@ const Landing = () => {
 		setLoadingMessage(loadingStates[0]);
 
 		try {
+			// Prepare headers with auth token if user is signed in
+			const headers: Record<string, string> = {
+				'Content-Type': 'application/json',
+			};
+			
+			// Add authorization header if user is signed in and session exists
+			if (user && session?.access_token) {
+				headers['Authorization'] = `Bearer ${session.access_token}`;
+			}
+
 			const response = await axios.get(
 				`${import.meta.env.VITE_PRODUCT_SCORE_URL}?url=${encodeURIComponent(productUrl)}`,
 				{
 					withCredentials: false,
-					headers: {
-						'Content-Type': 'application/json',
-					},
+					headers,
 				}
 			);
 			console.log('API Response:', response.data);

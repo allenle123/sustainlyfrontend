@@ -38,6 +38,14 @@ const Header = () => {
 					>
 						About
 					</Link>
+					{user && (
+						<Link
+							to="/history"
+							className={`text-sm font-medium transition-colors hover:text-eco-green ${isActive('/history') ? 'text-eco-green' : 'text-eco-text'}`}
+						>
+							History
+						</Link>
+					)}
 				</nav>
 
 				{/* Auth Buttons (Desktop) */}
@@ -73,6 +81,15 @@ const Header = () => {
 						>
 							About
 						</Link>
+						{user && (
+							<Link
+								to="/history"
+								className={`block rounded-md px-3 py-2 text-base font-medium ${isActive('/history') ? 'bg-eco-green/10 text-eco-green' : 'text-eco-text hover:bg-eco-green/5 hover:text-eco-green'}`}
+								onClick={() => setIsMenuOpen(false)}
+							>
+								History
+							</Link>
+						)}
 						<div className="mt-4 flex flex-col gap-2 pt-2 border-t border-eco-border">
 							{user ? <UserButton /> : <SignIn />}
 						</div>
