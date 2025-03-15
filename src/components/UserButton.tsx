@@ -8,7 +8,8 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/contexts/AuthContext';
-import { LogOut } from 'lucide-react';
+import { History, LogOut, User } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export function UserButton() {
 	const { user, signOut } = useAuth();
@@ -38,6 +39,19 @@ export function UserButton() {
 						<p className="text-xs leading-none text-muted-foreground">{user.email}</p>
 					</div>
 				</DropdownMenuLabel>
+				<DropdownMenuSeparator />
+				<DropdownMenuItem asChild className="cursor-pointer">
+					<Link to="/profile">
+						<User className="mr-2 h-4 w-4" />
+						<span>Profile</span>
+					</Link>
+				</DropdownMenuItem>
+				<DropdownMenuItem asChild className="cursor-pointer">
+					<Link to="/history">
+						<History className="mr-2 h-4 w-4" />
+						<span>History</span>
+					</Link>
+				</DropdownMenuItem>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem onClick={() => signOut()} className="cursor-pointer">
 					<LogOut className="mr-2 h-4 w-4" />
