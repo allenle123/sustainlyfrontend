@@ -27,7 +27,7 @@ const ProductDisplay = ({ name, description, imageSrc, brand, category }: Produc
 				<ProductImage
 					src={imageSrc}
 					alt={name}
-					className="h-full w-full max-h-48 md:max-h-64 transition-all duration-300 hover:scale-[1.02]"
+					className="h-full w-full max-h-48 md:max-h-64 transition-all duration-300"
 				/>
 			</div>
 

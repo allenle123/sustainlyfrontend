@@ -6,6 +6,8 @@ import { supabase } from '@/lib/supabase';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { SignIn } from '@/components/SignIn';
+import { Leaf } from 'lucide-react';
 
 interface HistoryItem {
 	id: string;
@@ -42,9 +44,9 @@ const History = () => {
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		// Redirect if not logged in
+		// Only fetch history if user is logged in
 		if (!user) {
-			navigate('/');
+			setLoading(false);
 			return;
 		}
 
@@ -201,7 +203,7 @@ const History = () => {
 			return;
 		}
 		
-		// If we have product data, navigate to the product page
+		// Navigate to product details page with the product data
 		navigate('/product', {
 			state: {
 				productData: item.productData,
@@ -209,7 +211,26 @@ const History = () => {
 		});
 	};
 
-	if (!user) return null;
+	// If user is not signed in, show sign-in prompt
+	if (!user) {
+		return (
+			<div className="container mx-auto max-w-4xl px-4 py-8">
+				<div className="flex flex-col items-center justify-center rounded-lg border border-eco-border bg-white p-8 shadow-sm">
+					<Leaf className="mb-4 h-12 w-12 text-eco-green" />
+					<h1 className="mb-2 text-2xl font-bold text-eco-text">View Your Product History</h1>
+					<p className="mb-6 text-center text-eco-text-light">
+						Sign in or create an account to view your product search history.
+					</p>
+					<div className="flex flex-col gap-4 sm:flex-row">
+						<SignIn />
+						<Button variant="outline" asChild>
+							<Link to="/">Back to Home</Link>
+						</Button>
+					</div>
+				</div>
+			</div>
+		);
+	}
 
 	return (
 		<div className="container mx-auto max-w-4xl px-4 py-8">
