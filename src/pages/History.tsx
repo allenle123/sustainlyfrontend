@@ -3,6 +3,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/components/ui/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -10,18 +11,34 @@ interface HistoryItem {
 	id: string;
 	user_id: string;
 	product_id: string;
-	product_title: string;
-	product_brand: string;
-	product_image: string;
-	sustainability_score: number;
-	created_at: string;
+	product_url: string;
+	updated_at: string;
+}
+
+interface ProductData {
+	productId: string;
+	title: string;
+	brand: string;
+	sustainabilityScore: number;
+	mainImage: string;
+	aspects: {
+		materials: { score: number; maxScore: number; explanation: string; shortExplanation: string };
+		manufacturing: { score: number; maxScore: number; explanation: string; shortExplanation: string };
+		lifecycle: { score: number; maxScore: number; explanation: string; shortExplanation: string };
+		certifications: { score: number; maxScore: number; explanation: string; shortExplanation: string };
+	};
+}
+
+interface HistoryItemWithProduct extends HistoryItem {
+	productData: ProductData | null;
+	isLoading: boolean;
 }
 
 const History = () => {
-	const { user } = useAuth();
+	const { user, session } = useAuth();
 	const navigate = useNavigate();
 	const { toast } = useToast();
-	const [history, setHistory] = useState<HistoryItem[]>([]);
+	const [historyItems, setHistoryItems] = useState<HistoryItemWithProduct[]>([]);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
@@ -31,17 +48,76 @@ const History = () => {
 			return;
 		}
 
-		// Fetch user history
-		const fetchHistory = async () => {
+		// Fetch user history and product data
+		const fetchHistoryAndProductData = async () => {
 			try {
-				const { data, error } = await supabase
+				// Fetch basic history data from Supabase
+				const { data: historyData, error } = await supabase
 					.from('user_history')
 					.select('*')
 					.eq('user_id', user.id)
-					.order('created_at', { ascending: false });
+					.order('updated_at', { ascending: false });
 
 				if (error) throw error;
-				setHistory(data || []);
+				
+				// Convert to history items with placeholders for product data
+				const historyItemsWithProduct = (historyData || []).map((item) => ({
+					...item,
+					productData: null,
+					isLoading: true,
+				}));
+				
+				setHistoryItems(historyItemsWithProduct);
+				
+				// For each history item, fetch the complete product data
+				const fetchProductDataPromises = historyItemsWithProduct.map(async (item, index) => {
+					try {
+						// Prepare headers with auth token if user is signed in
+						const headers: Record<string, string> = {
+							'Content-Type': 'application/json',
+						};
+						
+						if (session?.access_token) {
+							headers['Authorization'] = `Bearer ${session.access_token}`;
+						}
+						
+						// Try using the product URL to fetch data
+						const response = await axios.get(
+							`${import.meta.env.VITE_PRODUCT_SCORE_URL}?url=${encodeURIComponent(item.product_url)}`,
+							{
+								withCredentials: false,
+								headers,
+							}
+						);
+						
+						// Update the history item with the fetched product data
+						setHistoryItems((prevItems) => {
+							const updatedItems = [...prevItems];
+							updatedItems[index] = {
+								...updatedItems[index],
+								productData: response.data,
+								isLoading: false,
+							};
+							return updatedItems;
+						});
+					} catch (error) {
+						console.error(`Error fetching product data for ${item.product_id}:`, error);
+						
+						// Mark as not loading but without product data
+						setHistoryItems((prevItems) => {
+							const updatedItems = [...prevItems];
+							updatedItems[index] = {
+								...updatedItems[index],
+								isLoading: false,
+							};
+							return updatedItems;
+						});
+					}
+				});
+				
+				// Wait for all product data to be fetched
+				await Promise.allSettled(fetchProductDataPromises);
+				
 			} catch (error) {
 				console.error('Error fetching history:', error);
 				toast({
@@ -54,8 +130,8 @@ const History = () => {
 			}
 		};
 
-		fetchHistory();
-	}, [user, navigate, toast]);
+		fetchHistoryAndProductData();
+	}, [user, navigate, toast, session]);
 
 	const clearHistory = async () => {
 		if (!user) return;
@@ -66,7 +142,7 @@ const History = () => {
 
 			if (error) throw error;
 
-			setHistory([]);
+			setHistoryItems([]);
 			toast({
 				title: 'History cleared',
 				description: 'Your product search history has been cleared',
@@ -83,10 +159,52 @@ const History = () => {
 		}
 	};
 
-	const handleProductClick = (productData: any) => {
+	const handleProductClick = (item: HistoryItemWithProduct) => {
+		if (!item.productData) {
+			// If we don't have product data, try fetching it one more time
+			toast({
+				title: 'Loading product data',
+				description: 'Trying to retrieve product information...',
+			});
+			
+			const headers: Record<string, string> = {
+				'Content-Type': 'application/json',
+			};
+			
+			if (session?.access_token) {
+				headers['Authorization'] = `Bearer ${session.access_token}`;
+			}
+			
+			// Try using the product URL to fetch data
+			axios.get(
+				`${import.meta.env.VITE_PRODUCT_SCORE_URL}?url=${encodeURIComponent(item.product_url)}`,
+				{
+					withCredentials: false,
+					headers,
+				}
+			)
+			.then(response => {
+				navigate('/product', {
+					state: {
+						productData: response.data,
+					},
+				});
+			})
+			.catch(error => {
+				console.error('Error fetching product data:', error);
+				toast({
+					title: 'Error',
+					description: 'Unable to load product details at this time',
+					variant: 'destructive',
+				});
+			});
+			return;
+		}
+		
+		// If we have product data, navigate to the product page
 		navigate('/product', {
 			state: {
-				productData: productData,
+				productData: item.productData,
 			},
 		});
 	};
@@ -97,7 +215,7 @@ const History = () => {
 		<div className="container mx-auto max-w-4xl px-4 py-8">
 			<div className="flex items-center justify-between mb-8">
 				<h1 className="text-3xl font-bold text-eco-green">Your History</h1>
-				{history.length > 0 && (
+				{historyItems.length > 0 && (
 					<Button
 						variant="outline"
 						className="text-rose-500 border-rose-200 hover:bg-rose-50 hover:text-rose-600"
@@ -124,7 +242,7 @@ const History = () => {
 						</div>
 					))}
 				</div>
-			) : history.length === 0 ? (
+			) : historyItems.length === 0 ? (
 				// Empty state
 				<div className="text-center py-12">
 					<h2 className="text-2xl font-semibold text-gray-700 mb-4">No history yet</h2>
@@ -138,54 +256,57 @@ const History = () => {
 			) : (
 				// History list
 				<div className="space-y-4">
-					{history.map((item) => (
+					{historyItems.map((item) => (
 						<div
 							key={item.id}
 							className="flex border rounded-lg p-4 gap-4 cursor-pointer hover:bg-gray-50 transition-colors"
-							onClick={() =>
-								handleProductClick({
-									productId: item.product_id,
-									title: item.product_title,
-									brand: item.product_brand,
-									sustainabilityScore: item.sustainability_score,
-									mainImage: item.product_image,
-									// Note: This simplified version doesn't have aspect details
-									// In a real implementation, you'd either store those in the history
-									// or fetch the complete product data when clicking on a history item
-									aspects: {
-										materials: { score: 0, maxScore: 35, explanation: '', shortExplanation: '' },
-										manufacturing: { score: 0, maxScore: 25, explanation: '', shortExplanation: '' },
-										lifecycle: { score: 0, maxScore: 25, explanation: '', shortExplanation: '' },
-										certifications: { score: 0, maxScore: 15, explanation: '', shortExplanation: '' },
-									},
-								})
-							}
+							onClick={() => handleProductClick(item)}
 						>
-							<img
-								src={item.product_image}
-								alt={item.product_title}
-								className="h-24 w-24 rounded-md object-cover"
-							/>
-							<div className="flex-1">
-								<h3 className="font-medium">{item.product_title}</h3>
-								<p className="text-sm text-gray-500">{item.product_brand}</p>
-								<p className="text-xs text-gray-400">
-									{new Date(item.created_at).toLocaleDateString()}
-								</p>
-							</div>
-							<div className="flex items-center">
-								<div
-									className={`h-12 w-12 rounded-full flex items-center justify-center text-white font-bold ${
-										item.sustainability_score >= 70
-											? 'bg-green-500'
-											: item.sustainability_score >= 40
-											? 'bg-yellow-500'
-											: 'bg-red-500'
-									}`}
-								>
-									{item.sustainability_score}
+							{item.isLoading ? (
+								<>
+									<Skeleton className="h-24 w-24 rounded-md" />
+									<div className="space-y-2 flex-1">
+										<Skeleton className="h-6 w-3/4" />
+										<Skeleton className="h-4 w-1/2" />
+										<Skeleton className="h-4 w-1/4" />
+									</div>
+									<Skeleton className="h-12 w-12 rounded-full" />
+								</>
+							) : item.productData ? (
+								<>
+									<img
+										src={item.productData.mainImage}
+										alt={item.productData.title}
+										className="h-24 w-24 rounded-md object-cover"
+									/>
+									<div className="flex-1">
+										<h3 className="font-medium">{item.productData.title}</h3>
+										<p className="text-sm text-gray-500">{item.productData.brand}</p>
+										<p className="text-xs text-gray-400">
+											{new Date(item.updated_at).toLocaleDateString()}
+										</p>
+									</div>
+									<div className="flex items-center">
+										<div
+											className={`h-12 w-12 rounded-full flex items-center justify-center text-white font-bold ${
+												item.productData.sustainabilityScore >= 70
+													? 'bg-green-500'
+													: item.productData.sustainabilityScore >= 40
+													? 'bg-yellow-500'
+													: 'bg-red-500'
+											}`}
+										>
+											{item.productData.sustainabilityScore}
+										</div>
+									</div>
+								</>
+							) : (
+								<div className="flex items-center justify-center w-full text-center py-4">
+									<p className="text-gray-500">
+										Unable to load product data. Click to try again.
+									</p>
 								</div>
-							</div>
+							)}
 						</div>
 					))}
 				</div>
