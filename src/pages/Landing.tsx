@@ -17,6 +17,7 @@ const Landing = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState('');
 	const [loadingMessage, setLoadingMessage] = useState(loadingStates[0]);
+	const [loadingIndex, setLoadingIndex] = useState(0);
 	const navigate = useNavigate();
 	const { user, session } = useAuth();
 
@@ -24,9 +25,13 @@ const Landing = () => {
 		if (isLoading) {
 			let currentIndex = 0;
 			const interval = setInterval(() => {
-				currentIndex = (currentIndex + 1) % loadingStates.length;
-				setLoadingMessage(loadingStates[currentIndex]);
-			}, 2000); // Change message every 2 seconds
+				// Don't cycle back to the beginning, stop at the last message
+				if (currentIndex < loadingStates.length - 1) {
+					currentIndex += 1;
+					setLoadingIndex(currentIndex);
+					setLoadingMessage(loadingStates[currentIndex]);
+				}
+			}, 1500); // Change message more frequently (every 1.5 seconds)
 
 			return () => clearInterval(interval);
 		}
@@ -50,6 +55,7 @@ const Landing = () => {
 		setError('');
 		setIsLoading(true);
 		setLoadingMessage(loadingStates[0]);
+		setLoadingIndex(0);
 
 		try {
 			// Prepare headers with auth token if user is signed in
@@ -70,15 +76,22 @@ const Landing = () => {
 				}
 			);
 			console.log('API Response:', response.data);
-			navigate('/product', {
-				state: {
-					productData: response.data,
-				},
-			});
+			
+			// Ensure the "Finalizing sustainability score" message is shown before navigation
+			setLoadingMessage(loadingStates[loadingStates.length - 1]);
+			setLoadingIndex(loadingStates.length - 1);
+			
+			// Add a small delay to ensure the final message is seen
+			setTimeout(() => {
+				navigate('/product', {
+					state: {
+						productData: response.data,
+					},
+				});
+			}, 800);
 		} catch (err) {
 			setError('Failed to check sustainability. Please try again.');
 			console.error('Error:', err);
-		} finally {
 			setIsLoading(false);
 		}
 	};
@@ -117,7 +130,9 @@ const Landing = () => {
 							{isLoading ? (
 								<div className="flex items-center space-x-3">
 									<span className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
-									<span className="animate-pulse">{loadingMessage}</span>
+									<span className={`animate-pulse ${loadingIndex === loadingStates.length - 1 ? 'font-medium' : ''}`}>
+										{loadingMessage}
+									</span>
 								</div>
 							) : (
 								'Check Sustainability'

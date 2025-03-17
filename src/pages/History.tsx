@@ -9,6 +9,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { SignIn } from '@/components/SignIn';
 import { Leaf } from 'lucide-react';
 
+// Cache for history data to prevent unnecessary reloading
+const historyCache = {
+  data: null as HistoryItemWithProduct[] | null,
+  timestamp: 0,
+  // Cache expiration time in milliseconds (5 minutes)
+  expirationTime: 5 * 60 * 1000
+};
+
 interface HistoryItem {
 	id: string;
 	user_id: string;
@@ -46,6 +54,15 @@ const History = () => {
 	useEffect(() => {
 		// Only fetch history if user is logged in
 		if (!user) {
+			setLoading(false);
+			return;
+		}
+
+		// Check if we have valid cached data
+		const now = Date.now();
+		if (historyCache.data && now - historyCache.timestamp < historyCache.expirationTime) {
+			// Use cached data
+			setHistoryItems(historyCache.data);
 			setLoading(false);
 			return;
 		}
@@ -100,6 +117,11 @@ const History = () => {
 								productData: response.data,
 								isLoading: false,
 							};
+							
+							// Update cache with the latest data
+							historyCache.data = updatedItems;
+							historyCache.timestamp = Date.now();
+							
 							return updatedItems;
 						});
 					} catch (error) {
@@ -112,6 +134,11 @@ const History = () => {
 								...updatedItems[index],
 								isLoading: false,
 							};
+							
+							// Update cache with the latest data
+							historyCache.data = updatedItems;
+							historyCache.timestamp = Date.now();
+							
 							return updatedItems;
 						});
 					}
@@ -133,7 +160,7 @@ const History = () => {
 		};
 
 		fetchHistoryAndProductData();
-	}, [user, navigate, toast, session]);
+	}, [user, session]); // Removed navigate and toast from dependencies
 
 	const clearHistory = async () => {
 		if (!user) return;
@@ -144,6 +171,10 @@ const History = () => {
 
 			if (error) throw error;
 
+			// Clear the cache when history is cleared
+			historyCache.data = [];
+			historyCache.timestamp = Date.now();
+			
 			setHistoryItems([]);
 			toast({
 				title: 'History cleared',
