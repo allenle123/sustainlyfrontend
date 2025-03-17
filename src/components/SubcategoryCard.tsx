@@ -70,7 +70,7 @@ const SubcategoryCard = ({
 						<span className="ml-1 text-gray-500">/{maxScore}</span>
 					</div>
 
-					<p className="mt-2 text-sm text-gray-600 line-clamp-3">{description}</p>
+					<p className="mt-2 text-sm text-gray-600">{description}</p>
 				</div>
 			</div>
 

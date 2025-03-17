@@ -13,6 +13,14 @@ const ScoreDisplay = ({ score }: ScoreDisplayProps) => {
 		return 'bg-[#FF5252] text-white'; // Red for poor scores
 	}, [score]);
 
+	const getRating = (score: number): string => {
+		if (score >= 71) return 'Great';
+		if (score >= 51) return 'Good';
+		if (score >= 41) return 'Fair';
+		if (score >= 21) return 'Poor';
+		return 'Bad';
+	};
+
 	return (
 		<div className="score-container flex h-full flex-col items-center justify-center space-y-4">
 			<div className="mb-2">
@@ -30,6 +38,12 @@ const ScoreDisplay = ({ score }: ScoreDisplayProps) => {
 					</span>
 					<span className="mt-1 text-sm font-medium">out of 100</span>
 				</div>
+			</div>
+			
+			<div className="mt-2">
+				<span className={`inline-block rounded-full px-4 py-1 text-sm font-bold ${scoreColor}`}>
+					{getRating(score)}
+				</span>
 			</div>
 		</div>
 	);
