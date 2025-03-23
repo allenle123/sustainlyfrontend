@@ -67,85 +67,33 @@ const History = () => {
 			return;
 		}
 
-		// Fetch user history and product data
-		const fetchHistoryAndProductData = async () => {
+		// Fetch user history with product data in a single request
+		const fetchUserHistory = async () => {
 			try {
-				// Fetch basic history data from Supabase
-				const { data: historyData, error } = await supabase
-					.from('user_history')
-					.select('*')
-					.eq('user_id', user.id)
-					.order('updated_at', { ascending: false });
-
-				if (error) throw error;
+				// Prepare headers with auth token
+				const headers: Record<string, string> = {
+					'Content-Type': 'application/json',
+				};
 				
-				// Convert to history items with placeholders for product data
-				const historyItemsWithProduct = (historyData || []).map((item) => ({
-					...item,
-					productData: null,
-					isLoading: true,
-				}));
+				if (session?.access_token) {
+					headers['Authorization'] = `Bearer ${session.access_token}`;
+				}
 				
-				setHistoryItems(historyItemsWithProduct);
-				
-				// For each history item, fetch the complete product data
-				const fetchProductDataPromises = historyItemsWithProduct.map(async (item, index) => {
-					try {
-						// Prepare headers with auth token if user is signed in
-						const headers: Record<string, string> = {
-							'Content-Type': 'application/json',
-						};
-						
-						if (session?.access_token) {
-							headers['Authorization'] = `Bearer ${session.access_token}`;
-						}
-						
-						// Try using the product URL to fetch data
-						const response = await axios.get(
-							`${import.meta.env.VITE_PRODUCT_SCORE_URL}?url=${encodeURIComponent(item.product_url)}`,
-							{
-								withCredentials: false,
-								headers,
-							}
-						);
-						
-						// Update the history item with the fetched product data
-						setHistoryItems((prevItems) => {
-							const updatedItems = [...prevItems];
-							updatedItems[index] = {
-								...updatedItems[index],
-								productData: response.data,
-								isLoading: false,
-							};
-							
-							// Update cache with the latest data
-							historyCache.data = updatedItems;
-							historyCache.timestamp = Date.now();
-							
-							return updatedItems;
-						});
-					} catch (error) {
-						console.error(`Error fetching product data for ${item.product_id}:`, error);
-						
-						// Mark as not loading but without product data
-						setHistoryItems((prevItems) => {
-							const updatedItems = [...prevItems];
-							updatedItems[index] = {
-								...updatedItems[index],
-								isLoading: false,
-							};
-							
-							// Update cache with the latest data
-							historyCache.data = updatedItems;
-							historyCache.timestamp = Date.now();
-							
-							return updatedItems;
-						});
+				// Fetch history data from the new API endpoint
+				const response = await axios.get(
+					`${import.meta.env.VITE_API_BASE_URL}/user-history`,
+					{
+						withCredentials: false,
+						headers,
 					}
-				});
+				);
 				
-				// Wait for all product data to be fetched
-				await Promise.allSettled(fetchProductDataPromises);
+				// Update state with the fetched data
+				setHistoryItems(response.data);
+				
+				// Update cache
+				historyCache.data = response.data;
+				historyCache.timestamp = Date.now();
 				
 			} catch (error) {
 				console.error('Error fetching history:', error);
@@ -159,17 +107,32 @@ const History = () => {
 			}
 		};
 
-		fetchHistoryAndProductData();
-	}, [user, session]); // Removed navigate and toast from dependencies
+		fetchUserHistory();
+	}, [user, session]);
 
 	const clearHistory = async () => {
 		if (!user) return;
 
 		try {
 			setLoading(true);
-			const { error } = await supabase.from('user_history').delete().eq('user_id', user.id);
-
-			if (error) throw error;
+			
+			// Prepare headers with auth token
+			const headers: Record<string, string> = {
+				'Content-Type': 'application/json',
+			};
+			
+			if (session?.access_token) {
+				headers['Authorization'] = `Bearer ${session.access_token}`;
+			}
+			
+			// Call the DELETE endpoint to clear history
+			await axios.delete(
+				`${import.meta.env.VITE_API_BASE_URL}/user-history`,
+				{
+					withCredentials: false,
+					headers,
+				}
+			);
 
 			// Clear the cache when history is cleared
 			historyCache.data = [];
@@ -194,42 +157,10 @@ const History = () => {
 
 	const handleProductClick = (item: HistoryItemWithProduct) => {
 		if (!item.productData) {
-			// If we don't have product data, try fetching it one more time
 			toast({
-				title: 'Loading product data',
-				description: 'Trying to retrieve product information...',
-			});
-			
-			const headers: Record<string, string> = {
-				'Content-Type': 'application/json',
-			};
-			
-			if (session?.access_token) {
-				headers['Authorization'] = `Bearer ${session.access_token}`;
-			}
-			
-			// Try using the product URL to fetch data
-			axios.get(
-				`${import.meta.env.VITE_PRODUCT_SCORE_URL}?url=${encodeURIComponent(item.product_url)}`,
-				{
-					withCredentials: false,
-					headers,
-				}
-			)
-			.then(response => {
-				navigate('/product', {
-					state: {
-						productData: response.data,
-					},
-				});
-			})
-			.catch(error => {
-				console.error('Error fetching product data:', error);
-				toast({
-					title: 'Error',
-					description: 'Unable to load product details at this time',
-					variant: 'destructive',
-				});
+				title: 'Product data unavailable',
+				description: 'Sorry, we couldn\'t retrieve the details for this product.',
+				variant: 'destructive',
 			});
 			return;
 		}
@@ -355,7 +286,7 @@ const History = () => {
 							) : (
 								<div className="flex items-center justify-center w-full text-center py-4">
 									<p className="text-gray-500">
-										Unable to load product data. Click to try again.
+										Unable to load product data. 
 									</p>
 								</div>
 							)}

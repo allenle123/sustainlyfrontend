@@ -69,7 +69,7 @@ const Landing = () => {
 			}
 
 			const response = await axios.get(
-				`${import.meta.env.VITE_PRODUCT_SCORE_URL}?url=${encodeURIComponent(productUrl)}`,
+				`${import.meta.env.VITE_API_BASE_URL}/product-score?url=${encodeURIComponent(productUrl)}`,
 				{
 					withCredentials: false,
 					headers,
