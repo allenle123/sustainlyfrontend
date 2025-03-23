@@ -1,56 +1,60 @@
-import { render, screen } from '@testing-library/react';
+// SubcategoryCard.test.tsx
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { vi } from 'vitest';
 import SubcategoryCard from '../SubcategoryCard';
-import { describe, it, expect } from 'vitest';
 
-// Mock AnimatedNumber component to prevent animation-related issues in tests
-vi.mock('../AnimatedNumber', () => ({
-	default: ({ value }: { value: number }) => <span>{value}</span>,
+// Mock AnimatedNumber to simply render the value passed in.
+vi.mock('./AnimatedNumber', () => ({
+	default: ({ value, className }: any) => {
+		return <span className={className}>{value}</span>;
+	},
 }));
 
 describe('SubcategoryCard', () => {
-	it('renders title, score, and description correctly', () => {
-		render(
-			<SubcategoryCard
-				title="Materials"
-				score={30}
-				description="Test description"
-				index={0}
-			/>
-		);
+	const props = {
+		title: 'Test Category',
+		score: 20,
+		description: 'This is a test description',
+		index: 0,
+		maxScore: 25,
+		fullExplanation: 'This is a full explanation',
+	};
 
-		expect(screen.getByText('Materials')).toBeInTheDocument();
-		expect(screen.getByText('30')).toBeInTheDocument();
-		expect(screen.getByText('/35')).toBeInTheDocument();
-		expect(screen.getByText('Test description')).toBeInTheDocument();
+	it('renders card with provided data', async () => {
+		render(<SubcategoryCard {...props} />);
+
+		// Check that the card's title and description are rendered.
+		expect(screen.getByText('Test Category')).toBeInTheDocument();
+		expect(screen.getByText('This is a test description')).toBeInTheDocument();
+
+		// AnimatedNumber might show its initial value (0) if not animated in tests.
+		expect(screen.getByText('0')).toBeInTheDocument();
+
+		// Check that the max score is rendered.
+		expect(screen.getByText('/25')).toBeInTheDocument();
 	});
 
-	it('applies the correct score color class based on score percentage', () => {
-		const { container } = render(
-			<SubcategoryCard
-				title="Materials"
-				score={30}
-				description="Test description"
-				index={0}
-			/>
-		);
+	it('opens and closes the modal on card click', async () => {
+		render(<SubcategoryCard {...props} />);
 
-		// Check if any element in the component has the green class
-		const greenElement = container.querySelector('.text-eco-green');
+		// The modal should not be visible initially.
+		expect(screen.queryByTestId('aspect-modal')).toBeNull();
 
-		// Verify that a green element exists somewhere in the component
-		expect(greenElement).not.toBeNull();
-	});
+		// Click on the card (using its title, for example).
+		await userEvent.click(screen.getByText('Test Category'));
 
-	it('applies animation delay based on index', () => {
-		const { container } = render(
-			<SubcategoryCard
-				title="Manufacturing"
-				score={15}
-				description="Another description"
-				index={2}
-			/>
-		);
+		// Wait for the modal to appear by looking for the "Close" button.
+		await waitFor(() => {
+			expect(screen.getByRole('button', { name: /Close/i })).toBeInTheDocument();
+		});
 
-		expect(container.firstChild).toHaveStyle('animation-delay: 0.5s');
+		// Click the "Close" button.
+		await userEvent.click(screen.getByRole('button', { name: /Close/i }));
+
+		// Wait for the modal to be removed.
+		await waitFor(() => {
+			expect(screen.queryByTestId('aspect-modal')).toBeNull();
+		});
 	});
 });

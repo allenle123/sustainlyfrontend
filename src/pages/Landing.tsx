@@ -62,7 +62,7 @@ const Landing = () => {
 			const headers: Record<string, string> = {
 				'Content-Type': 'application/json',
 			};
-			
+
 			// Add authorization header if user is signed in and session exists
 			if (user && session?.access_token) {
 				headers['Authorization'] = `Bearer ${session.access_token}`;
@@ -76,11 +76,11 @@ const Landing = () => {
 				}
 			);
 			console.log('API Response:', response.data);
-			
+
 			// Ensure the "Finalizing sustainability score" message is shown before navigation
 			setLoadingMessage(loadingStates[loadingStates.length - 1]);
 			setLoadingIndex(loadingStates.length - 1);
-			
+
 			// Add a small delay to ensure the final message is seen
 			setTimeout(() => {
 				navigate('/product', {
@@ -130,7 +130,9 @@ const Landing = () => {
 							{isLoading ? (
 								<div className="flex items-center space-x-3">
 									<span className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
-									<span className={`animate-pulse ${loadingIndex === loadingStates.length - 1 ? 'font-medium' : ''}`}>
+									<span
+										className={`animate-pulse ${loadingIndex === loadingStates.length - 1 ? 'font-medium' : ''}`}
+									>
 										{loadingMessage}
 									</span>
 								</div>
