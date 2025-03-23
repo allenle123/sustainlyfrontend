@@ -1,81 +1,83 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, vi, expect, beforeEach } from 'vitest';
+// UserButton.test.tsx
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { vi } from 'vitest';
+import { MemoryRouter } from 'react-router-dom';
 import { UserButton } from '../UserButton';
-import { useAuth } from '@/contexts/AuthContext';
 
-vi.mock('@/components/ui/dropdown-menu', async () => {
-	const actual = await vi.importActual('@/components/ui/dropdown-menu');
-	return {
-		...actual,
-		DropdownMenu: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-		DropdownMenuTrigger: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-		DropdownMenuContent: ({ children }: { children: React.ReactNode }) => (
-			<div data-testid="dropdown-content">{children}</div>
-		),
-		DropdownMenuItem: ({
-			children,
-			onClick,
-		}: { children: React.ReactNode; onClick: () => void }) => (
-			<button data-testid="dropdown-item" onClick={onClick} type="button">
-				{children}
-			</button>
-		),
-	};
-});
-
+// Mock the useAuth hook from your AuthContext
 vi.mock('@/contexts/AuthContext', () => ({
 	useAuth: vi.fn(),
 }));
 
+import { useAuth } from '@/contexts/AuthContext';
+
+const fakeUser = {
+	email: 'test@example.com',
+	user_metadata: {
+		avatar_url: 'http://example.com/avatar.png',
+		full_name: 'Test User',
+	},
+};
+
 describe('UserButton Component', () => {
-	beforeEach(() => {
+	afterEach(() => {
 		vi.clearAllMocks();
 	});
 
-	it('should not render if user is not authenticated', () => {
-		(useAuth as unknown as ReturnType<typeof vi.fn>).mockReturnValue({ user: null });
+	it('does not render when no user is provided', () => {
+		(useAuth as vi.Mock).mockReturnValue({ user: null, signOut: vi.fn() });
+		render(
+			<MemoryRouter>
+				<UserButton />
+			</MemoryRouter>
+		);
 
-		const { container } = render(<UserButton />);
-		expect(container.firstChild).toBeNull();
+		// Since no user is provided, no trigger button should be rendered.
+		expect(screen.queryByRole('button')).toBeNull();
 	});
 
-	it('should render user avatar and metadata', () => {
-		(useAuth as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
-			user: {
-				email: 'test@example.com',
-				user_metadata: {
-					full_name: 'Test User',
-					avatar_url: 'https://example.com/avatar.png',
-				},
-			},
-			signOut: vi.fn(),
+	it('renders correctly when a user is provided', async () => {
+		(useAuth as vi.Mock).mockReturnValue({ user: fakeUser, signOut: vi.fn() });
+		render(
+			<MemoryRouter>
+				<UserButton />
+			</MemoryRouter>
+		);
+
+		// Get the dropdown trigger button and click it using userEvent.
+		const triggerButton = screen.getByRole('button');
+		expect(triggerButton).toBeInTheDocument();
+
+		await userEvent.click(triggerButton);
+
+		// Wait for the dropdown content to appear.
+		await waitFor(() => {
+			// Use regex matchers to be more lenient
+			expect(screen.getByText(/Test User/i)).toBeInTheDocument();
+			expect(screen.getByText(/test@example.com/i)).toBeInTheDocument();
+			expect(screen.getByText(/Profile/i)).toBeInTheDocument();
+			expect(screen.getByText(/History/i)).toBeInTheDocument();
+			expect(screen.getByText(/Log\s*out/i)).toBeInTheDocument();
 		});
-
-		render(<UserButton />);
-
-		// With our simplified mock, we can directly check for the text
-		expect(screen.getByText('Test User')).toBeInTheDocument();
-		expect(screen.getByText('test@example.com')).toBeInTheDocument();
 	});
 
-	it('should call signOut when logout button is clicked', () => {
-		const mockSignOut = vi.fn();
-		(useAuth as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
-			user: {
-				email: 'test@example.com',
-				user_metadata: {
-					full_name: 'Test User',
-				},
-			},
-			signOut: mockSignOut,
-		});
+	it('calls signOut when the "Log out" option is clicked', async () => {
+		const signOutMock = vi.fn();
+		(useAuth as vi.Mock).mockReturnValue({ user: fakeUser, signOut: signOutMock });
+		render(
+			<MemoryRouter>
+				<UserButton />
+			</MemoryRouter>
+		);
 
-		render(<UserButton />);
+		const triggerButton = screen.getByRole('button');
+		await userEvent.click(triggerButton);
 
-		// Find the logout button by its text content
-		const logoutButton = screen.getByText('Log out');
+		// Wait for the "Log out" menu item to appear.
+		const logOutItem = await screen.findByText(/Log\s*out/i);
+		await userEvent.click(logOutItem);
 
-		fireEvent.click(logoutButton);
-		expect(mockSignOut).toHaveBeenCalled();
+		expect(signOutMock).toHaveBeenCalled();
 	});
 });
