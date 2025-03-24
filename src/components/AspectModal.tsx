@@ -107,6 +107,24 @@ const AspectModal = ({
     return '#F44336';
   };
 
+  // Determine score keyword
+  const getScoreKeyword = () => {
+    const percentage = (score / maxScore) * 100;
+    if (percentage >= 80) return 'Excellent';
+    if (percentage >= 60) return 'Good';
+    if (percentage >= 40) return 'Fair';
+    return 'Poor';
+  };
+
+  // Get color for the keyword based on score
+  const getKeywordColor = () => {
+    const percentage = (score / maxScore) * 100;
+    if (percentage >= 80) return '#4CAF50'; // Green
+    if (percentage >= 60) return '#689F38'; // Darker yellow-green
+    if (percentage >= 40) return '#FF9800'; // Orange
+    return '#F44336'; // Red
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
       <div 
@@ -160,11 +178,91 @@ const AspectModal = ({
                   }}
                 ></div>
               </div>
+              <div className="mt-1">
+                <span className="text-sm font-medium" style={{ color: getKeywordColor() }}>
+                  {getScoreKeyword()}
+                </span>
+              </div>
             </div>
           </div>
           
           <div className="prose max-w-none">
-            <p className="text-gray-700 whitespace-pre-line leading-relaxed">{explanation}</p>
+            {explanation.includes('POSITIVES:') || explanation.includes('NEGATIVES:') || explanation.includes('SUMMARY:') ? (
+              <div className="space-y-8">
+                {/* POSITIVES section */}
+                {explanation.includes('POSITIVES:') && (
+                  <div className="bg-gradient-to-r from-emerald-100 to-green-100 p-6 rounded-lg shadow-lg border-l-8 border-emerald-500">
+                    <h3 className="text-emerald-800 text-xl font-bold mb-4 flex items-center">
+                      <svg className="w-7 h-7 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      Positive Aspects
+                    </h3>
+                    <div className="space-y-4">
+                      {explanation
+                        .split('POSITIVES:')[1]
+                        .split(/NEGATIVES:|SUMMARY:/)[0]
+                        .split('•')
+                        .filter(point => point.trim().length > 0)
+                        .map((point, index) => (
+                          <div key={index} className="bg-white p-4 rounded-lg shadow-md flex items-start">
+                            <div className="bg-emerald-500 text-white rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
+                              <span className="text-sm font-bold">+</span>
+                            </div>
+                            <p className="text-gray-800">{point.trim()}</p>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                )}
+                
+                {/* NEGATIVES section */}
+                {explanation.includes('NEGATIVES:') && (
+                  <div className="bg-gradient-to-r from-rose-100 to-red-100 p-6 rounded-lg shadow-lg border-l-8 border-rose-500">
+                    <h3 className="text-rose-800 text-xl font-bold mb-4 flex items-center">
+                      <svg className="w-7 h-7 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      Areas for Improvement
+                    </h3>
+                    <div className="space-y-4">
+                      {explanation
+                        .split('NEGATIVES:')[1]
+                        .split(/SUMMARY:/)[0]
+                        .split('•')
+                        .filter(point => point.trim().length > 0)
+                        .map((point, index) => (
+                          <div key={index} className="bg-white p-4 rounded-lg shadow-md flex items-start">
+                            <div className="bg-rose-500 text-white rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
+                              <span className="text-sm font-bold">-</span>
+                            </div>
+                            <p className="text-gray-800">{point.trim()}</p>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                )}
+                
+                {/* SUMMARY section */}
+                {explanation.includes('SUMMARY:') && (
+                  <div className="bg-gradient-to-r from-sky-100 to-blue-100 p-6 rounded-lg shadow-lg border-l-8 border-sky-500">
+                    <h3 className="text-sky-800 text-xl font-bold mb-4 flex items-center">
+                      <svg className="w-7 h-7 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      Summary
+                    </h3>
+                    <div className="bg-white p-4 rounded-lg shadow-md">
+                      <p className="text-gray-800 leading-relaxed">
+                        {explanation.split('SUMMARY:')[1].trim()}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <p className="text-gray-700">{explanation}</p>
+            )}
           </div>
         </div>
         
