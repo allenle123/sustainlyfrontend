@@ -11,6 +11,7 @@ interface ProductData {
 	brand: string;
 	sustainabilityScore: number;
 	mainImage: string;
+	categories: string[];
 	aspects: {
 		materials: {
 			score: number;
@@ -150,7 +151,7 @@ const Product = () => {
 						description=""
 						imageSrc={productData.mainImage}
 						brand={productData.brand}
-						category="Electronics"
+						category={productData.categories && productData.categories.length > 0 ? productData.categories[0] : "Unknown"}
 					/>
 				</div>
 
