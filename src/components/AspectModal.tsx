@@ -133,13 +133,7 @@ const AspectModal = ({
         style={{ maxHeight: '80vh' }}
       >
         <div className="relative">
-          {/* Decorative corner elements */}
-          <div className="absolute top-0 left-0 w-6 h-6">
-            <div className="absolute top-0 left-0 w-3 h-3 rounded-br-lg bg-eco-green/20"></div>
-          </div>
-          <div className="absolute top-0 right-0 w-6 h-6">
-            <div className="absolute top-0 right-0 w-3 h-3 rounded-bl-lg bg-eco-green/20"></div>
-          </div>
+          {/* Removing decorative corner elements */}
           
           <div className="flex justify-between items-center border-b border-gray-100 px-6 py-4">
             <h3 className="text-xl font-bold text-gray-900 capitalize">{title}</h3>
@@ -187,7 +181,7 @@ const AspectModal = ({
           </div>
           
           <div className="prose max-w-none">
-            {explanation.includes('POSITIVES:') || explanation.includes('NEGATIVES:') || explanation.includes('SUMMARY:') ? (
+            {explanation.includes('POSITIVES:') || explanation.includes('NEGATIVES:') || explanation.includes('UNCERTAIN:') || explanation.includes('SUMMARY:') ? (
               <div className="space-y-8">
                 {/* POSITIVES section */}
                 {explanation.includes('POSITIVES:') && (
@@ -201,7 +195,7 @@ const AspectModal = ({
                     <div className="space-y-4">
                       {explanation
                         .split('POSITIVES:')[1]
-                        .split(/NEGATIVES:|SUMMARY:/)[0]
+                        .split(/NEGATIVES:|UNCERTAIN:|SUMMARY:/)[0]
                         .split('•')
                         .filter(point => point.trim().length > 0)
                         .map((point, index) => (
@@ -228,13 +222,40 @@ const AspectModal = ({
                     <div className="space-y-4">
                       {explanation
                         .split('NEGATIVES:')[1]
-                        .split(/SUMMARY:/)[0]
+                        .split(/UNCERTAIN:|SUMMARY:/)[0]
                         .split('•')
                         .filter(point => point.trim().length > 0)
                         .map((point, index) => (
                           <div key={index} className="bg-white p-4 rounded-lg shadow-md flex items-start">
                             <div className="bg-rose-500 text-white rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
                               <span className="text-sm font-bold">-</span>
+                            </div>
+                            <p className="text-gray-800">{point.trim()}</p>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                )}
+                
+                {/* UNCERTAIN section */}
+                {explanation.includes('UNCERTAIN:') && (
+                  <div className="bg-gradient-to-r from-amber-100 to-yellow-100 p-6 rounded-lg shadow-lg border-l-8 border-amber-500">
+                    <h3 className="text-amber-800 text-xl font-bold mb-4 flex items-center">
+                      <svg className="w-7 h-7 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      Uncertain Factors
+                    </h3>
+                    <div className="space-y-4">
+                      {explanation
+                        .split('UNCERTAIN:')[1]
+                        .split(/SUMMARY:/)[0]
+                        .split('•')
+                        .filter(point => point.trim().length > 0)
+                        .map((point, index) => (
+                          <div key={index} className="bg-white p-4 rounded-lg shadow-md flex items-start">
+                            <div className="bg-amber-500 text-white rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
+                              <span className="text-sm font-bold">?</span>
                             </div>
                             <p className="text-gray-800">{point.trim()}</p>
                           </div>

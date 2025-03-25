@@ -54,12 +54,17 @@ const SubcategoryCard = ({
 				onClick={() => setIsModalOpen(true)}
 			>
 				<div className="relative">
-					<div className="absolute top-0 right-0 w-8 h-8 overflow-hidden">
-						<div 
-							className="absolute top-0 right-0 w-12 h-12 bg-eco-green/40 rotate-45 origin-top-right"
-							style={{ borderTopRightRadius: '5px' }}
-						></div>
-					</div>
+					<div 
+						className="absolute top-0 right-0"
+						style={{
+							width: 0,
+							height: 0,
+							borderStyle: 'solid',
+							borderWidth: '0 24px 24px 0',
+							borderColor: 'transparent rgba(76, 175, 80, 0.3) transparent transparent',
+							borderRadius: '0 2px 0 0',
+						}}
+					></div>
 
 					<h3 className="text-lg font-semibold">{title}</h3>
 
