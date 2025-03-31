@@ -49,24 +49,20 @@ const SubcategoryCard = ({
 	return (
 		<>
 			<div
-				className="eco-card group cursor-pointer opacity-0 animate-fade-in transition-all duration-300 hover:translate-y-[-4px]"
+				className="group cursor-pointer opacity-0 animate-fade-in transition-all duration-300 hover:translate-y-[-4px] rounded-lg border border-gray-200 bg-white p-4 shadow-sm hover:shadow-md flex flex-col relative overflow-hidden h-[300px]"
 				style={{ animationDelay, animationFillMode: 'forwards' }}
 				onClick={() => setIsModalOpen(true)}
 			>
-				<div className="relative">
+				<div className="relative z-10 flex flex-col h-full">
 					<div 
-						className="absolute top-0 right-0"
-						style={{
-							width: 0,
-							height: 0,
-							borderStyle: 'solid',
-							borderWidth: '0 24px 24px 0',
-							borderColor: 'transparent rgba(76, 175, 80, 0.3) transparent transparent',
-							borderRadius: '0 2px 0 0',
-						}}
+						className={cn("absolute -top-1 -right-1 w-16 h-16 rounded-bl-full", 
+							score >= 0.8 * maxScore ? "bg-green-100" : 
+							score >= 0.6 * maxScore ? "bg-yellow-100" : 
+							score >= 0.4 * maxScore ? "bg-orange-100" : "bg-red-100"
+						)}
 					></div>
 
-					<h3 className="text-lg font-semibold">{title}</h3>
+					<h3 className="text-lg font-semibold mb-1">{title}</h3>
 
 					<div className="mt-4 flex items-center">
 						<span className={cn('text-2xl font-bold', scoreColor)}>
@@ -75,7 +71,14 @@ const SubcategoryCard = ({
 						<span className="ml-1 text-gray-500">/{maxScore}</span>
 					</div>
 
-					<p className="mt-2 text-sm text-gray-600">{description}</p>
+					<p className="mt-2 text-sm text-gray-600 line-clamp-4 flex-grow">{description}</p>
+					
+					<div className="mt-auto pb-2 text-xs text-gray-500 flex items-center">
+						<svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+						</svg>
+						Click for details
+					</div>
 				</div>
 			</div>
 
