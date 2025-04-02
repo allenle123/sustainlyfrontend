@@ -25,18 +25,6 @@ vi.mock('react-router-dom', async () => {
 });
 
 // Mock the components used in the Product component
-vi.mock('@/components/AlternativeProducts', () => ({
-	default: ({ products }) => (
-		<div data-testid="alternative-products">
-			{products.map((product) => (
-				<div key={product.id} data-testid="alternative-product">
-					{product.name}
-				</div>
-			))}
-		</div>
-	),
-}));
-
 vi.mock('@/components/ProductDisplay', () => ({
 	default: ({ name, imageSrc }) => (
 		<div>
@@ -60,6 +48,18 @@ vi.mock('@/components/SubcategoryCard', () => ({
 	),
 }));
 
+vi.mock('@/components/SustainabilityTips', () => ({
+	default: ({ tips }) => (
+		<div data-testid="sustainability-tips">
+			{tips && tips.map((tip, index) => (
+				<div key={index} data-testid="sustainability-tip">
+					{tip.tip} - {tip.category}
+				</div>
+			))}
+		</div>
+	),
+}));
+
 describe('Product component', () => {
 	const productData = {
 		productId: '1',
@@ -67,6 +67,13 @@ describe('Product component', () => {
 		brand: 'EcoBrand',
 		sustainabilityScore: 85,
 		mainImage: 'https://example.com/image.jpg',
+		categories: ['electronics', 'home'],
+		sustainabilityTips: [
+			{ tip: "Use this product as intended to maximize its lifespan.", category: 'usage' },
+			{ tip: "Follow the manufacturer's maintenance guidelines.", category: 'maintenance' },
+			{ tip: "Check local recycling guidelines for proper disposal.", category: 'disposal' },
+			{ tip: "Consider the environmental impact when purchasing similar products.", category: 'general' }
+		],
 		aspects: {
 			materials: {
 				score: 80,
@@ -139,7 +146,7 @@ describe('Product component', () => {
 		// Check that subcategory cards are rendered
 		expect(screen.getAllByTestId('subcategory-card')).toHaveLength(4);
 
-		// Check that alternative products are displayed
-		expect(screen.getByTestId('alternative-products')).toBeInTheDocument();
+		// Check that sustainability tips are displayed
+		expect(screen.getByTestId('sustainability-tips')).toBeInTheDocument();
 	});
 });

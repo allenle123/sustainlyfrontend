@@ -1,4 +1,4 @@
-import AlternativeProducts from '@/components/AlternativeProducts';
+import SustainabilityTips from '@/components/SustainabilityTips';
 import ProductDisplay from '@/components/ProductDisplay';
 import ScoreDisplay from '@/components/ScoreDisplay';
 import SubcategoryCard from '@/components/SubcategoryCard';
@@ -38,42 +38,11 @@ interface ProductData {
 			shortExplanation: string;
 		};
 	};
+	sustainabilityTips?: {
+		tip: string;
+		category: 'usage' | 'maintenance' | 'disposal' | 'general';
+	}[];
 }
-
-const mockAlternatives = [
-	{
-		id: '1',
-		name: 'Eco-Friendly Audio DAC',
-		brand: 'GreenSound',
-		score: 85,
-		imageSrc:
-			'https://images.unsplash.com/photo-1558089687-f282ffcbc126?w=500&auto=format&fit=crop',
-	},
-	{
-		id: '2',
-		name: 'Sustainable Hi-Fi Decoder',
-		brand: 'EarthAudio',
-		score: 92,
-		imageSrc:
-			'https://images.unsplash.com/photo-1610217053402-ea06ee3c8503?w=500&auto=format&fit=crop',
-	},
-	{
-		id: '3',
-		name: 'Low-Power DAC Converter',
-		brand: 'PureSound',
-		score: 78,
-		imageSrc:
-			'https://images.unsplash.com/photo-1545454675-3531b543be5d?w=500&auto=format&fit=crop',
-	},
-	{
-		id: '4',
-		name: 'Recycled Materials DAC',
-		brand: 'EcoTech',
-		score: 88,
-		imageSrc:
-			'https://images.unsplash.com/photo-1558098329-44e410142b7c?w=500&auto=format&fit=crop',
-	},
-];
 
 const Product = () => {
 	const location = useLocation();
@@ -174,7 +143,10 @@ const Product = () => {
 				))}
 			</div>
 
-			<AlternativeProducts products={mockAlternatives} />
+			<SustainabilityTips 
+				productCategories={productData.categories || []} 
+				tips={productData.sustainabilityTips}
+			/>
 		</div>
 	);
 };
