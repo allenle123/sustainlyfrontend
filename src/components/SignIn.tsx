@@ -69,7 +69,7 @@ export function SignIn() {
 				<Button
 					variant="outline"
 					size="sm"
-					className="gap-1"
+					className="gap-1 hover:bg-opacity-10 hover:bg-accent transition-colors duration-200"
 					onClick={() => setIsOpen(true)}
 				>
 					<LogIn className="h-4 w-4" />
