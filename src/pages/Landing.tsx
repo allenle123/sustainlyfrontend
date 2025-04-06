@@ -102,7 +102,7 @@ const Landing = () => {
 			<div className="w-full max-w-xl text-center mb-12">
 				<h1 className="text-6xl font-bold text-eco-green mb-4 tracking-tight">Sustainly</h1>
 				<p className="text-xl font-medium text-eco-green flex items-center justify-center gap-2">
-					Enter an <img src={amazonLogo} alt="Amazon" className="h-6 inline-block" style={{ objectFit: 'contain', position: 'relative', top: '3px' }} /> URL to check sustainability
+					Enter an <img src={amazonLogo} alt="Amazon" className="h-6 inline-block" style={{ objectFit: 'contain', position: 'relative', top: '3px' }} /> Product URL to Check Sustainability
 				</p>
 			</div>
 

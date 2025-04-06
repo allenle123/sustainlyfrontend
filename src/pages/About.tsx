@@ -97,7 +97,7 @@ const About = () => {
 			<div className="eco-card">
 				<h2 className="mb-6 text-2xl font-bold">Our AI-Powered Scoring Methodology</h2>
 				<p className="mb-4">
-					To generate sustainability scores, we use advanced AI technology to analyze product information, including:
+					To generate sustainability scores, we use AI technology to analyze product information, including:
 				</p>
 				<ul className="mb-6 list-inside list-disc text-gray-700">
 					<li>Product descriptions and specifications</li>
