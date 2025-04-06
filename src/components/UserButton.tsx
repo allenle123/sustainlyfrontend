@@ -7,6 +7,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { toast } from '@/components/ui/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { History, LogOut, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -53,7 +54,24 @@ export function UserButton() {
 					</Link>
 				</DropdownMenuItem>
 				<DropdownMenuSeparator />
-				<DropdownMenuItem onClick={() => signOut()} className="cursor-pointer">
+				<DropdownMenuItem onClick={() => {
+					signOut()
+						.then(() => {
+							toast({
+								title: 'Logged out successfully',
+								description: 'You have been logged out of your account.',
+								variant: 'default',
+							});
+						})
+						.catch((error) => {
+							console.error('Error signing out:', error);
+							toast({
+								title: 'Error',
+								description: 'Failed to log out. Please try again.',
+								variant: 'destructive',
+							});
+						});
+				}} className="cursor-pointer">
 					<LogOut className="mr-2 h-4 w-4" />
 					<span>Log out</span>
 				</DropdownMenuItem>
