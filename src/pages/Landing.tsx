@@ -2,6 +2,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import amazonLogo from '@/assets/Amazon_logo.svg';
 
 const loadingStates = [
 	'Retrieving product data...',
@@ -100,8 +101,8 @@ const Landing = () => {
 		<div className="flex min-h-[calc(100vh-64px)] flex-col items-center justify-start px-4 pt-36 pb-12">
 			<div className="w-full max-w-xl text-center mb-12">
 				<h1 className="text-6xl font-bold text-eco-green mb-4 tracking-tight">Sustainly</h1>
-				<p className="text-xl font-medium text-eco-green">
-					Discover the environmental impact of your products
+				<p className="text-xl font-medium text-eco-green flex items-center justify-center gap-2">
+					Enter an <img src={amazonLogo} alt="Amazon" className="h-6 inline-block" style={{ objectFit: 'contain', position: 'relative', top: '3px' }} /> URL to check sustainability
 				</p>
 			</div>
 
@@ -114,7 +115,7 @@ const Landing = () => {
 							type="text"
 							required
 							placeholder="Enter product URL"
-							className="block w-full max-w-2xl rounded-full border-gray-300 bg-white px-6 py-3 shadow-sm transition-all duration-300 focus:border-eco-green focus:ring-eco-green/20 text-base hover:shadow-md hover:border-eco-green/50"
+							className="block w-full max-w-2xl rounded-full border-2 border-eco-green bg-white px-6 py-3 transition-colors duration-300 focus:border-eco-green focus:ring-0 text-base hover:border-eco-green/70 outline-none"
 							value={productUrl}
 							onChange={(e) => setProductUrl(e.target.value)}
 						/>
