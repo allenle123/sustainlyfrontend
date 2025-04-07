@@ -120,7 +120,9 @@ const Product = () => {
 						description=""
 						imageSrc={productData.mainImage}
 						brand={productData.brand}
-						category={productData.categories && productData.categories.length > 0 ? productData.categories[0] : "Unknown"}
+						category={productData.categories && productData.categories.length > 0 
+							? productData.categories[productData.categories.length - 1] 
+							: "Unknown"}
 					/>
 				</div>
 
