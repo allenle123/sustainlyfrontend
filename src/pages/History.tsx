@@ -70,9 +70,10 @@ const History = () => {
 		// Fetch user history with product data in a single request
 		const fetchUserHistory = async () => {
 			try {
-				// Prepare headers with auth token
+				// Prepare headers with auth token and API key
 				const headers: Record<string, string> = {
 					'Content-Type': 'application/json',
+					'x-api-key': import.meta.env.VITE_API_KEY, // Add API key from environment variable
 				};
 				
 				if (session?.access_token) {
@@ -116,9 +117,10 @@ const History = () => {
 		try {
 			setLoading(true);
 			
-			// Prepare headers with auth token
+			// Prepare headers with auth token and API key
 			const headers: Record<string, string> = {
 				'Content-Type': 'application/json',
+				'x-api-key': import.meta.env.VITE_API_KEY, // Add API key from environment variable
 			};
 			
 			if (session?.access_token) {
