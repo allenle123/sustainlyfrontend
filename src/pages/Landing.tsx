@@ -62,7 +62,7 @@ const Landing = () => {
 			// Prepare headers with auth token if user is signed in
 			const headers: Record<string, string> = {
 				'Content-Type': 'application/json',
-				'x-api-key': 'pTrMMiA9tX7rKYj00z94W2Zd1pdnhne5YSLSOYd0', // Add the API key header
+				'x-api-key': import.meta.env.VITE_API_KEY, // Use API key from environment variable
 			};
 
 			// Add authorization header if user is signed in and session exists
