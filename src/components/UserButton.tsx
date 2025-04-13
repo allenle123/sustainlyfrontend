@@ -17,8 +17,6 @@ export function UserButton() {
 
 	if (!user) return null;
 
-	// Log user data to see what we get from Google
-	console.log('User metadata:', user.user_metadata);
 
 	// Get user's initials for the avatar fallback
 	const initials = user.email ? user.email.charAt(0).toUpperCase() : 'U';

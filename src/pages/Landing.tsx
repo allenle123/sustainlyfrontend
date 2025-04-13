@@ -6,6 +6,7 @@ import amazonLogo from '@/assets/Amazon_logo.svg';
 
 const loadingStates = [
 	'Retrieving product data...',
+	'Searching web for information...',
 	'Analyzing sustainability factors...',
 	'Calculating environmental impact...',
 	'Processing materials data...',
@@ -77,7 +78,6 @@ const Landing = () => {
 					headers,
 				}
 			);
-			console.log('API Response:', response.data);
 
 			// Ensure the "Finalizing sustainability score" message is shown before navigation
 			setLoadingMessage(loadingStates[loadingStates.length - 1]);
