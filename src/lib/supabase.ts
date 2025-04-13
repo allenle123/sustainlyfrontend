@@ -4,11 +4,6 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder-url.supabase.co';
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder-key';
 
-// Log configuration status (without exposing actual values)
-console.log('Supabase configuration:', {
-  urlConfigured: !!import.meta.env.VITE_SUPABASE_URL,
-  keyConfigured: !!import.meta.env.VITE_SUPABASE_ANON_KEY,
-});
 
 // Create client with error handling
 let supabaseClient;
