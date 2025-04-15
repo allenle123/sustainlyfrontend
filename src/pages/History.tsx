@@ -82,7 +82,7 @@ const History = () => {
 				
 				// Fetch history data from the new API endpoint
 				const response = await axios.get(
-					`${import.meta.env.VITE_API_BASE_URL}/user-history`,
+					`${import.meta.env.VITE_API_BASE_URL_DEV}/user-history`,
 					{
 						withCredentials: false,
 						headers,
@@ -129,7 +129,7 @@ const History = () => {
 			
 			// Call the DELETE endpoint to clear history
 			await axios.delete(
-				`${import.meta.env.VITE_API_BASE_URL}/user-history`,
+				`${import.meta.env.VITE_API_BASE_URL_DEV}/user-history`,
 				{
 					withCredentials: false,
 					headers,
