@@ -73,7 +73,7 @@ const History = () => {
 				// Prepare headers with auth token and API key
 				const headers: Record<string, string> = {
 					'Content-Type': 'application/json',
-					'x-api-key': import.meta.env.VITE_API_KEY, // Add API key from environment variable
+					'x-api-key': import.meta.env.VITE_API_KEY_DEV, // Add API key from environment variable
 				};
 				
 				if (session?.access_token) {
@@ -120,7 +120,7 @@ const History = () => {
 			// Prepare headers with auth token and API key
 			const headers: Record<string, string> = {
 				'Content-Type': 'application/json',
-				'x-api-key': import.meta.env.VITE_API_KEY, // Add API key from environment variable
+				'x-api-key': import.meta.env.VITE_API_KEY_DEV, // Add API key from environment variable
 			};
 			
 			if (session?.access_token) {

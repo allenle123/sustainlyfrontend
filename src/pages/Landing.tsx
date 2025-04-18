@@ -63,7 +63,7 @@ const Landing = () => {
 			// Prepare headers with auth token if user is signed in
 			const headers: Record<string, string> = {
 				'Content-Type': 'application/json',
-				'x-api-key': import.meta.env.VITE_API_KEY, // Use API key from environment variable
+				'x-api-key': import.meta.env.VITE_API_KEY_DEV, // Use API key from environment variable
 			};
 
 			// Add authorization header if user is signed in and session exists
@@ -71,11 +71,17 @@ const Landing = () => {
 				headers['Authorization'] = `Bearer ${session.access_token}`;
 			}
 
+			// For development, try using the production endpoint instead of the dev endpoint
+			// This might work if the production endpoint has proper CORS configuration
 			const response = await axios.get(
 				`${import.meta.env.VITE_API_BASE_URL_DEV}/product-score?url=${encodeURIComponent(productUrl)}`,
 				{
 					withCredentials: false,
-					headers,
+					headers: {
+						...headers,
+						// Use the production API key instead of dev
+						'x-api-key': import.meta.env.VITE_API_KEY_DEV,
+					},
 				}
 			);
 
