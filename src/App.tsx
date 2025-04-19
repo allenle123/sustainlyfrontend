@@ -1,6 +1,7 @@
 import { Toaster as Sonner } from '@/components/ui/sonner';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { Analytics } from '@vercel/analytics/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AnimatePresence } from 'framer-motion';
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
@@ -46,6 +47,7 @@ const App = () => (
 					<Header />
 					<AnimatedRoutes />
 				</BrowserRouter>
+				<Analytics />
 			</TooltipProvider>
 		</AuthProvider>
 	</QueryClientProvider>
